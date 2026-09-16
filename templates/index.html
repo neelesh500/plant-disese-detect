@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaggle-Trained Plant Disease AI</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="background-glass"></div>
+    
+    <header>
+        <div class="logo">🌿 <span>AgriNet AI</span></div>
+        <nav>
+            <a href="#">Dashboard</a>
+            <a href="#">Analytics</a>
+            <a href="#">Edge Nodes</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="hero">
+            <h1>Deep Learning Plant Disease Detection</h1>
+            <p>Powered by a 3000 GB Kaggle Dataset. A hybrid ML and CNN architecture.</p>
+        </div>
+
+        <div class="upload-container">
+            <div class="drag-area" id="drag-area">
+                <div class="icon">📁</div>
+                <h3>Drag & Drop Leaf Image Here</h3>
+                <span>OR</span>
+                <button id="browse-btn">Browse Files</button>
+                <input type="file" id="file-input" hidden accept="image/*">
+            </div>
+
+            <div class="preview-area hidden" id="preview-area">
+                <img id="image-preview" src="" alt="Preview">
+                <div class="controls">
+                    <button id="analyze-btn" class="btn-primary">Analyze with Hybrid ML/CNN</button>
+                    <button id="reset-btn" class="btn-secondary">Reset</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="results-container hidden" id="results-container">
+            <h2>Analysis Analytics</h2>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h4>Predicted Disease</h4>
+                    <h2 id="r-disease">Tomato - Early Blight</h2>
+                </div>
+                <div class="metric-card">
+                    <h4>Model Accuracy</h4>
+                    <h2 id="r-confidence" class="highlight">99.53%</h2>
+                </div>
+                <div class="metric-card">
+                    <h4>Inference Latency</h4>
+                    <h2 id="r-latency">24 ms (C++ Edge)</h2>
+                </div>
+            </div>
+
+            <div class="treatment-box">
+                <h3>Recommended Treatment</h3>
+                <p id="r-treatment">Apply a copper-based fungicide or chlorothalonil. Ensure adequate spacing between plants to improve air circulation.</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
