@@ -30,3 +30,7 @@ This document outlines the optimal datasets and feature extraction methods for r
 - **Metrics:** HSV Histograms, LAB Color Space Moments.
 - **Why:** Diseased plants exhibit clear chlorosis (yellowing) or necrosis (browning) early on.
 
+### B. Texture Features (GLCM)
+- **Metrics:** Contrast, Correlation, Energy, Homogeneity (via Gray Level Co-occurrence Matrix).
+- **Why:** Distinguishes between uniform healthy texture and patchy, irregular diseased areas.
+
