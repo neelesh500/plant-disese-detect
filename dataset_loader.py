@@ -16,3 +16,8 @@ class LeafFeatureExtractor:
         hsv_image = cv2.cvtColor(self.image, cv2.COLOR_BGR2HSV)
         return np.mean(hsv_image, axis=(0, 1))
 
+    def extract_texture_features(self):
+        """Placeholder for GLCM extraction."""
+        # GLCM requires skimage.feature.graycoprops
+        return {"contrast": 0.0, "homogeneity": 0.0}
+
