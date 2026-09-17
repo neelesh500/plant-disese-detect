@@ -24,3 +24,9 @@ This document outlines the optimal datasets and feature extraction methods for r
 - **Details:** 21K+ images with heavy real-world noise.
 - **Use Case:** Excellent for testing real-world model deployment capabilities across varying lighting.
 
+## 2. Essential Image Features for Extraction
+
+### A. Color Features
+- **Metrics:** HSV Histograms, LAB Color Space Moments.
+- **Why:** Diseased plants exhibit clear chlorosis (yellowing) or necrosis (browning) early on.
+
