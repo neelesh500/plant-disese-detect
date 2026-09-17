@@ -38,3 +38,7 @@ This document outlines the optimal datasets and feature extraction methods for r
 - **Metrics:** Leaf Area, Perimeter, Spot-to-Leaf Area Ratio.
 - **Why:** Essential for measuring disease severity by calculating the percentage of damage.
 
+### D. Deep Feature Extraction
+- **Metrics:** Flattened CNN vectors from pre-trained backbones (e.g., ResNet50, EfficientNet).
+- **Why:** Captures high-level spatial abstractions that traditional ML features miss.
+
