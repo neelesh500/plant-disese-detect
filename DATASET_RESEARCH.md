@@ -19,3 +19,8 @@ This document outlines the optimal datasets and feature extraction methods for r
 - **Details:** ~2,500 real-world, non-laboratory plant condition images.
 - **Use Case:** Crucial for improving model robustness in actual field deployments.
 
+### D. Cassava Leaf Disease Dataset
+- **Source:** Kaggle Competition Data
+- **Details:** 21K+ images with heavy real-world noise.
+- **Use Case:** Excellent for testing real-world model deployment capabilities across varying lighting.
+
