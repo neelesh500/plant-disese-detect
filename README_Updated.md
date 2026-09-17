@@ -98,3 +98,7 @@ This research creates a foundation for an integrated plant disease identificatio
 8. Grinblat, G. L., et al. (2016). "Deep learning for plant identification using vein morphological patterns." *Computers and Electronics in Agriculture*, 127, 418-424.
 9. Pawara, P., et al. (2017). "Comparing feature extraction methods for plant recognition." 
 10. Lee, S. H., et al. (2015). "How deep learning extracts and learns leaf features for plant classification." *Pattern Recognition*.
+
+
+## Dataset & Features
+For detailed dataset selections and feature engineering approaches (Kaggle & Field data), please refer to [DATASET_RESEARCH.md](DATASET_RESEARCH.md).
