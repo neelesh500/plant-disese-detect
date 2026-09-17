@@ -21,3 +21,9 @@ class LeafFeatureExtractor:
         # GLCM requires skimage.feature.graycoprops
         return {"contrast": 0.0, "homogeneity": 0.0}
 
+    def extract_shape_features(self):
+        """Extract simple morphological attributes."""
+        gray = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
+        _, thresh = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY)
+        return {"area": np.sum(thresh == 255)}
+
