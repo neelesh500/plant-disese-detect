@@ -10,3 +10,9 @@ class LeafFeatureExtractor:
         self.image_path = image_path
         self.image = cv2.imread(image_path)
 
+    def extract_color_features(self):
+        """Extract HSV color moments."""
+        if self.image is None: return None
+        hsv_image = cv2.cvtColor(self.image, cv2.COLOR_BGR2HSV)
+        return np.mean(hsv_image, axis=(0, 1))
+
