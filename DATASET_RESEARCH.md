@@ -14,3 +14,8 @@ This document outlines the optimal datasets and feature extraction methods for r
 - **Details:** ~54K images. Highly standardized.
 - **Use Case:** Ideal for comparative analysis against existing research papers.
 
+### C. PlantDoc Dataset
+- **Source:** GitHub / Kaggle
+- **Details:** ~2,500 real-world, non-laboratory plant condition images.
+- **Use Case:** Crucial for improving model robustness in actual field deployments.
+
