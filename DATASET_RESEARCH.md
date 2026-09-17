@@ -34,3 +34,7 @@ This document outlines the optimal datasets and feature extraction methods for r
 - **Metrics:** Contrast, Correlation, Energy, Homogeneity (via Gray Level Co-occurrence Matrix).
 - **Why:** Distinguishes between uniform healthy texture and patchy, irregular diseased areas.
 
+### C. Morphological / Shape Features
+- **Metrics:** Leaf Area, Perimeter, Spot-to-Leaf Area Ratio.
+- **Why:** Essential for measuring disease severity by calculating the percentage of damage.
+
