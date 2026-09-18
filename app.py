@@ -3,6 +3,8 @@ import os
 import random
 import time
 
+from werkzeug.utils import secure_filename
+
 # To fully run the model, you'd integrate TensorFlow or PyTorch here. 
 # import tensorflow as tf 
 # from hybrid_model import HybridEnsembleModel
@@ -30,7 +32,9 @@ def predict():
         return jsonify({'error': 'No file selected'}), 400
         
     if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
         # In a real scenario, you would save the image or read it into memory:
+        # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         # img = Image.open(file.stream).resize((224, 224))
         # predictions = hybrid_model.predict(img)
         
