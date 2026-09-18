@@ -1,9 +1,11 @@
 """
 Dataset loader and feature extraction utility script.
 """
+
+
 import cv2
 import numpy as np
-import os
+
 
 class LeafFeatureExtractor:
     def __init__(self, image_path):
@@ -12,19 +14,29 @@ class LeafFeatureExtractor:
 
     def extract_color_features(self):
         """Extract HSV color moments."""
-        if self.image is None: return None
+        if self.image is None:
+            return None
         hsv_image = cv2.cvtColor(self.image, cv2.COLOR_BGR2HSV)
         return np.mean(hsv_image, axis=(0, 1))
 
     def extract_texture_features(self):
         """Extract GLCM texture features."""
         from skimage.feature import graycomatrix, graycoprops
-        if self.image is None: return None
+
+        if self.image is None:
+            return None
         gray = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
-        glcm = graycomatrix(gray, distances=[5], angles=[0], levels=256, symmetric=True, normed=True)
+        glcm = graycomatrix(
+            gray,
+            distances=[5],
+            angles=[0],
+            levels=256,
+            symmetric=True,
+            normed=True,
+        )
         return {
-            "contrast": graycoprops(glcm, 'contrast')[0, 0],
-            "homogeneity": graycoprops(glcm, 'homogeneity')[0, 0]
+            "contrast": graycoprops(glcm, "contrast")[0, 0],
+            "homogeneity": graycoprops(glcm, "homogeneity")[0, 0],
         }
 
     def extract_shape_features(self):
@@ -32,4 +44,3 @@ class LeafFeatureExtractor:
         gray = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
         _, thresh = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY)
         return {"area": np.sum(thresh == 255)}
-
