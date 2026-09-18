@@ -1,0 +1,7 @@
+﻿-xc++
+-Ic:\mingw\lib\gcc\mingw32\6.3.0\include\c++
+-Ic:\mingw\lib\gcc\mingw32\6.3.0\include\c++\mingw32
+-Ic:\mingw\lib\gcc\mingw32\6.3.0\include\c++\backward
+-Ic:\mingw\lib\gcc\mingw32\6.3.0\include
+-Ic:\mingw\include
+-Ic:\mingw\lib\gcc\mingw32\6.3.0\include-fixed

@@ -1,13 +1,12 @@
 // fast_edge_inference.cpp
 // This script simulates the low-latency hardware integration on Edge Devices
-// (Autonomous Drones)
+// (such as Autonomous Drones) (Autonomous Drones)
 
 #include <chrono>
 #include <iomanip>
 #include <iostream>
 #include <thread>
 #include <vector>
-
 
 #ifdef _WIN32
 #include <windows.h>
