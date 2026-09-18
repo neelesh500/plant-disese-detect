@@ -17,9 +17,15 @@ class LeafFeatureExtractor:
         return np.mean(hsv_image, axis=(0, 1))
 
     def extract_texture_features(self):
-        """Placeholder for GLCM extraction."""
-        # GLCM requires skimage.feature.graycoprops
-        return {"contrast": 0.0, "homogeneity": 0.0}
+        """Extract GLCM texture features."""
+        from skimage.feature import graycomatrix, graycoprops
+        if self.image is None: return None
+        gray = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
+        glcm = graycomatrix(gray, distances=[5], angles=[0], levels=256, symmetric=True, normed=True)
+        return {
+            "contrast": graycoprops(glcm, 'contrast')[0, 0],
+            "homogeneity": graycoprops(glcm, 'homogeneity')[0, 0]
+        }
 
     def extract_shape_features(self):
         """Extract simple morphological attributes."""
