@@ -1,3 +1,4 @@
+import os
 import tensorflow as tf
 from tensorflow.keras.applications import MobileNetV2, ResNet50
 from tensorflow.keras.layers import Dense, GlobalAveragePooling2D, Dropout
@@ -44,3 +45,8 @@ if __name__ == "__main__":
     print("Example snippet:")
     print("train_ds = tf.keras.preprocessing.image_dataset_from_directory('path_to_dataset', image_size=(224, 224), batch_size=32)")
     print("model.fit(train_ds, epochs=50)")
+    
+    # Save the model
+    os.makedirs('models', exist_ok=True)
+    model.save('models/plant_disease_model.h5')
+    print("✅ Model saved to models/plant_disease_model.h5")
