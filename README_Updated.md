@@ -1,4 +1,9 @@
 # Complete Comprehensive Research Paper: Advanced Hybrid Machine Learning and Deep Learning Methodologies for Plant Disease Detection Using Massive-Scale Datasets
+## Quick Setup
+```bash
+pip install -r requirements.txt
+python app.py
+```
 
 **Pratham Yadav, Narendra Choudhary, Neelesh Tewari, Prerak Goswami**
 
