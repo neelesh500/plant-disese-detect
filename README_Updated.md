@@ -87,6 +87,12 @@ The proposed deep learning approach finds general solutions beyond shallow metho
 
 With the use of Python for modeling, R for statistics, MATLAB for optical preprocessing, and C++ for ultra-low latency hardware deployment, this comprehensive pipeline effectively ingests TBs of Kaggle data to form an automated plant disease detection architecture. 
 
+**Recent Enhancements:**
+- **API Improvements:** Added Flask-CORS support for cross-origin requests and comprehensive Python `logging` for debugging in `app.py`.
+- **Training Pipeline:** Configured ModelCheckpoint and EarlyStopping callbacks in `train.py` to prevent overfitting.
+- **Data Augmentation:** Implemented runtime image rotation and flipping strategies in `dataset_loader.py` for increased robustness.
+- **Edge Deployment:** Fixed `std::this_thread` compatibility issue in C++ edge inference binaries for cross-platform execution.
+
 **Future Scope:** 
 This research creates a foundation for an integrated plant disease identification system ready to operate in real cultivation conditions. Immediate next steps involve full commercialization into a user-friendly agronomist mobile application and the deployment into real-time agricultural robotics and drones for automated field sweeping.
 
