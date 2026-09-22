@@ -61,7 +61,11 @@ if __name__ == "__main__":
     print(
         "train_ds = tf.keras.preprocessing.image_dataset_from_directory('path_to_dataset', image_size=(224, 224), batch_size=32)"
     )
-    print("model.fit(train_ds, epochs=50)")
+    print("callbacks = [")
+    print("    tf.keras.callbacks.EarlyStopping(patience=5, restore_best_weights=True),")
+    print("    tf.keras.callbacks.ModelCheckpoint('models/best_model.h5', save_best_only=True)")
+    print("]")
+    print("model.fit(train_ds, epochs=50, callbacks=callbacks)")
 
     # Save the model
     os.makedirs("models", exist_ok=True)
