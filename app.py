@@ -6,12 +6,18 @@ from flask import Flask, jsonify, render_template, request
 # To fully run the model, you'd integrate TensorFlow or PyTorch here.
 # import tensorflow as tf
 # from hybrid_model import HybridEnsembleModel
+import logging
+from flask_cors import CORS
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
+CORS(app) # Enable CORS for all routes
 
 # Allowed extensions
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
-
 
 def allowed_file(filename):
     return (
@@ -28,15 +34,18 @@ def index():
 @app.route("/predict", methods=["POST"])
 def predict():
     if "file" not in request.files:
+        logger.warning("Predict endpoint hit with no file uploaded.")
         return jsonify({"error": "No file uploaded"}), 400
 
     file = request.files["file"]
 
     if file.filename == "":
+        logger.warning("Predict endpoint hit with empty filename.")
         return jsonify({"error": "No file selected"}), 400
 
     try:
         if file and allowed_file(file.filename):
+            logger.info(f"Processing uploaded file: {file.filename}")
             # filename = secure_filename(file.filename)
             # In a real scenario, you would save the image or read it:
             # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
