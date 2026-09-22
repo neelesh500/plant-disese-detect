@@ -5,7 +5,6 @@
 #include <chrono>
 #include <iomanip>
 #include <iostream>
-#include <thread>
 #include <vector>
 
 #ifdef _WIN32
