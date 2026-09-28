@@ -555,3 +555,5 @@ button {
 .hidden {
     display: none !important;
 }
+/* Enhancing mobile fluidity */
+@media (max-width: 500px) { main { padding: 0 1rem; } }
