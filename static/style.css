@@ -557,3 +557,6 @@ button {
 }
 /* Enhancing mobile fluidity */
 @media (max-width: 500px) { main { padding: 0 1rem; } }
+
+/* Refined particle z-indexing */
+.ambient-orb { z-index: -2; }
