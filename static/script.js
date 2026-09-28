@@ -185,3 +185,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     });
 });
+
+// Initialize system debug logs
+console.log("AgriNet UI modules loaded.");
