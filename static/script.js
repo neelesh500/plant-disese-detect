@@ -188,3 +188,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Initialize system debug logs
 console.log("AgriNet UI modules loaded.");
+
+// Graceful degradation for non-3D browsers
+if (!window.requestAnimationFrame) { console.warn("RAF not supported."); }
