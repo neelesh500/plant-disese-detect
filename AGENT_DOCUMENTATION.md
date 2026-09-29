@@ -1,0 +1,1 @@
+# AgriNet AI Agent Documentation\n\nThis document outlines the architecture and integration of the newly added Multimodal AI Agent into the plant disease detection system.\n
