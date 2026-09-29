@@ -1,1 +1,1 @@
-# AgriNet AI Agent Documentation\n\nThis document outlines the architecture and integration of the newly added Multimodal AI Agent into the plant disease detection system.\n
+# AgriNet AI Agent Documentation\n\nThis document outlines the architecture and integration of the newly added Multimodal AI Agent into the plant disease detection system.\n\n\n## 1. Overview\nThe AI Agent supports both Voice (via WebSpeech API) and Text commands, enabling hands-free operation in agricultural environments.\n
