@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriNet - Plant Disease Detection</title>
+    <!-- Google Fonts: Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+    <!-- Ambient glowing orbs (very subtle) -->
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+
+    <header>
+        <div class="logo">
+            <svg class="leaf-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.5 13.5C2.5 13.5 1 5.5 10 2L13.5 5.5V11C13.5 11 16 7 21 7C21 7 23 18 13.5 21L11 18.5V14.5"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M12 22L12 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+            AgriNet <span>AI</span>
+        </div>
+        <nav>
+            <a href="#" class="active">Dashboard</a>
+            <a href="#">Analytics</a>
+            <a href="#">Edge Nodes</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero glass-panel" data-tilt>
+            <div class="hero-content">
+                <div class="badge">Kaggle-Trained AI Architecture</div>
+                <h1>Deep Learning <span>Plant Diagnostic</span> Engine</h1>
+                <p>Upload a leaf image to instantly detect anomalies, utilizing our hybrid ML & CNN pipeline processing
+                    on ultra-low latency edge devices.</p>
+            </div>
+        </section>
+
+        <!-- Main workspace containing upload & results side by side or stacked -->
+        <div class="workspace">
+            <section class="upload-section glass-panel" id="upload-panel" data-tilt>
+                <div class="drag-area" id="drag-area">
+                    <div class="icon-orb">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                    </div>
+                    <h3>Upload Leaf Specimen</h3>
+                    <p class="subtitle">Drag & drop your structural imagery here</p>
+                    <div class="divider">
+                        <span>OR</span>
+                    </div>
+                    <button class="btn-outline" id="browse-btn">
+                        <span>Browse Files</span>
+                    </button>
+                    <input type="file" id="file-input" hidden accept="image/*">
+                </div>
+
+                <div class="preview-area hidden" id="preview-area">
+                    <div class="image-wrapper">
+                        <img id="image-preview" src="" alt="Specimen Preview">
+                        <div class="scan-line"></div>
+                    </div>
+                    <div class="controls">
+                        <button class="btn-primary glow-on-hover" id="analyze-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            Init Inference
+                        </button>
+                        <button class="btn-ghost" id="reset-btn">Reset</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="results-section hidden" id="results-container">
+                <div class="glass-panel result-card main-result" data-tilt>
+                    <div class="header-tag">Diagnostic Result</div>
+                    <h2 id="r-disease" class="disease-title">Analyzing...</h2>
+                    <div class="treatment-box">
+                        <div class="treatment-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M11 20A7 7 0 0 1 4 13V6l7-4 7 4v7a7 7 0 0 1-7 7Z"></path>
+                                <path d="M11 10.5V17"></path>
+                                <path d="M8 14h6"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4>Recommended Protocol</h4>
+                            <p id="r-treatment">Awaiting inference completion.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metrics-row">
+                    <div class="glass-panel metric-card" data-tilt>
+                        <svg class="metric-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M2 12h4l3-9 5 18 3-9h5"></path>
+                        </svg>
+                        <h4>Accuracy Score</h4>
+                        <div class="value-wrap">
+                            <span class="value" id="r-confidence-val">0</span>
+                            <span class="unit">%</span>
+                        </div>
+                    </div>
+                    <div class="glass-panel metric-card" data-tilt>
+                        <svg class="metric-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <h4>Edge Latency</h4>
+                        <div class="value-wrap">
+                            <span class="value" id="r-latency-val">0</span>
+                            <span class="unit">ms</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="/static/script.js"></script>
+</body>
+
+</html><!-- Optimized responsive scaling for dashboards -->
+<!-- Add accessibility labels -->
