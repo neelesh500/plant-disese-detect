@@ -46,13 +46,25 @@ def predict():
     try:
         if file and allowed_file(file.filename):
             logger.info(f"Processing uploaded file: {file.filename}")
+            
+            # Extract Multimodal Environmental Inputs
+            temperature = float(request.form.get("temperature", 25.0))
+            humidity = float(request.form.get("humidity", 60.0))
+            soil_moisture = float(request.form.get("soil_moisture", 40.0))
+            
+            logger.info(f"Received Environmental Data -> Temp: {temperature}C, Humidity: {humidity}%, Moisture: {soil_moisture}%")
+
             # filename = secure_filename(file.filename)
             # In a real scenario, you would save the image or read it:
             # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             # img = Image.open(file.stream).resize((224, 224))
-            # predictions = hybrid_model.predict(img)
+            
+            # env_tensor = torch.tensor([[temperature, humidity, soil_moisture]])
+            # logits = multimodal_model(img_tensor, env_tensor)
+            # heatmap = generate_gradcam_heatmap(...)
+            # severity = estimate_severity_yolo_seg(...)
 
-            # Simulating Edge Inference latency and Hybrid Deep Learning model
+            # Simulating System latency
             time.sleep(1.5)
 
             # Mocking predictions for prototype demonstration
@@ -90,6 +102,8 @@ def predict():
                 "treatment": prediction[1],
                 "confidence": prediction[2],
                 "latency": f"{random.randint(18, 35)} ms (C++ Edge Inference)",
+                "gradcam_heatmap": "/static/mock_heatmap.jpg", # Path to generated XAI heatmap
+                "severity_percentage": f"{random.uniform(5.5, 35.8):.1f}%"
             }
 
             return jsonify(response)
