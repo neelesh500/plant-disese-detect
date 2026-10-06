@@ -60,6 +60,33 @@
                     </div>
                     <h3>Upload Leaf Specimen</h3>
                     <p class="subtitle">Drag & drop your structural imagery here</p>
+
+                    <!-- Multimodal Envrionmental Data Collection -->
+                    <div class="multimodal-inputs"
+                        style="margin-top: 20px; text-align: left; background: rgba(0,0,0,0.1); padding: 15px; border-radius: 10px;">
+                        <h4 style="margin-bottom: 10px; font-size: 0.9em; opacity: 0.8;">Environmental Context
+                            (Optional)</h4>
+
+                        <label for="temperature-input"
+                            style="font-size: 0.8em; display:flex; justify-content:space-between;">
+                            Temperature (°C) <span id="temp-val">25</span>
+                        </label>
+                        <input type="range" id="temperature-input" min="0" max="50" value="25"
+                            style="width: 100%; margin-bottom: 10px;">
+
+                        <label for="humidity-input"
+                            style="font-size: 0.8em; display:flex; justify-content:space-between;">
+                            Humidity (%) <span id="hum-val">60</span>
+                        </label>
+                        <input type="range" id="humidity-input" min="0" max="100" value="60"
+                            style="width: 100%; margin-bottom: 10px;">
+
+                        <label for="moisture-input"
+                            style="font-size: 0.8em; display:flex; justify-content:space-between;">
+                            Soil Moisture (%) <span id="moist-val">40</span>
+                        </label>
+                        <input type="range" id="moisture-input" min="0" max="100" value="40" style="width: 100%;">
+                    </div>
                     <div class="divider">
                         <span>OR</span>
                     </div>
@@ -132,12 +159,24 @@
                             <span class="unit">ms</span>
                         </div>
                     </div>
+
+                    <div class="glass-panel metric-card" data-tilt>
+                        <svg class="metric-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" style="stroke: #ff4757;">
+                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        <h4>Severity Index</h4>
+                        <div class="value-wrap">
+                            <span class="value" id="r-severity-val" style="color: #ff4757;">0</span>
+                            <span class="unit">%</span>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>
     </main>
 
-    
+
     <!-- AI Agent Interface -->
     <div id="ai-agent-container" class="hidden glass-panel" data-tilt>
         <div class="agent-header">
@@ -145,7 +184,8 @@
             <button id="agent-close-btn">&times;</button>
         </div>
         <div class="agent-messages" id="agent-messages">
-            <div class="message ai">Hello! I am AgriNet AI. You can say "open camera", "upload image", "analyze", or "close".</div>
+            <div class="message ai">Hello! I am AgriNet AI. You can say "open camera", "upload image", "analyze", or
+                "close".</div>
         </div>
         <video id="agent-camera" class="hidden" autoplay playsinline></video>
         <button id="agent-capture-btn" class="hidden btn-primary">Capture</button>
@@ -165,7 +205,9 @@
     </div>
     <button id="agent-toggle-btn" class="glow-on-hover">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2a2 2 0 0 1 2 2v1h5a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-4v2h2v2H7v-2h2v-2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5V4a2 2 0 0 1 2-2z"></path>
+            <path
+                d="M12 2a2 2 0 0 1 2 2v1h5a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-4v2h2v2H7v-2h2v-2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5V4a2 2 0 0 1 2-2z">
+            </path>
         </svg>
     </button>
 

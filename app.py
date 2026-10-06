@@ -10,6 +10,7 @@ import logging
 import os
 import numpy as np
 from PIL import Image
+import json
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -133,7 +134,6 @@ def predict():
                 try:
                     # Check if the model is ONNX or Keras
                     if hasattr(model, 'run'): # ONNX InferenceSession
-                        # Convert to float32 as ONNX expects it
                         img_array_f32 = img_array.astype(np.float32)
                         input_name = model.get_inputs()[0].name
                         preds = model.run(None, {input_name: img_array_f32})[0]
@@ -143,42 +143,57 @@ def predict():
                     class_idx = np.argmax(preds[0])
                     confidence = preds[0][class_idx] * 100
                     
-                    # Make sure class_idx is within bounds
-                    if class_idx < len(PLANT_DISEASES):
-                        disease_name, treatment = PLANT_DISEASES[class_idx]
+                    # Try to load real class names if trained
+                    class_names = []
+                    if os.path.exists("models/class_names.json"):
+                        with open("models/class_names.json", "r") as f:
+                            class_names = json.load(f)
+                    
+                    if class_names and class_idx < len(class_names):
+                        disease_name = class_names[class_idx]
+                        
+                        # Find matching treatment
+                        treatment = "No specific protocol found. Maintain general plant health."
+                        for d_mapping, t_mapping in PLANT_DISEASES:
+                            if d_mapping.lower() in disease_name.lower().replace("_", " ") or disease_name.lower().replace("_", " ") in d_mapping.lower():
+                                treatment = t_mapping
+                                break
                     else:
-                        disease_name, treatment = "Unknown", "No protocol found."
+                        if class_idx < len(PLANT_DISEASES):
+                            disease_name, treatment = PLANT_DISEASES[class_idx]
+                        else:
+                            disease_name, treatment = "Unknown Anomaly", "No protocol found."
+                            
                 except Exception as e:
                     logger.error(f"Error during prediction: {e}")
-                    model = None # Fallback to hash if prediction fails
+                    return jsonify({"error": "Inference Engine Error"}), 500
+            else:
+                return jsonify({"error": "Model not loaded. Please train or deploy the model correctly."}), 500
             
-            if model is None:
-                # If TensorFlow isn't loading or model doesn't exist, we fallback to a simulated logic
-                # using the image's hash/size to make it deterministic but NOT random. choice.
-                import hashlib
-                hash_val = int(hashlib.md5(img_array.tobytes()).hexdigest(), 16)
-                class_idx = hash_val % len(PLANT_DISEASES)
-                disease_name, treatment = PLANT_DISEASES[class_idx]
-                
-                # We calculate mock confidence but in a deterministic way based on image properties and environmental data
-                confidence = 85.0 + (hash_val % 145) / 10.0
-            
-            # Calculate severity based on logic (e.g. 100 - confidence, or environmental factors)
-            if "Healthy" in disease_name:
+            # Calculate severity based on AI confidence and Envrionmental Factors (Rule-based Multimodal Agronomy Engine)
+            # This makes the environmental inputs functional and biologically logical
+            if "healthy" in disease_name.lower():
                 severity = 0.0
             else:
-                severity = min(100.0, max(5.0, (temperature / 40.0) * 50 + (100 - confidence)))
+                # Base severity inversely proportional to confidence (lower confidence = higher spread variability)
+                base_sev = max(10.0, 100 - confidence) 
+                
+                # Environmental multipliers (Fungal/Bacterial diseases spread faster in high humidity and moisture)
+                env_multiplier = 1.0
+                if humidity > 70.0: env_multiplier += 0.2
+                if temperature > 28.0 and temperature < 35.0: env_multiplier += 0.15 
+                
+                severity = min(100.0, base_sev * env_multiplier)
 
             # Calculate actual processing latency
             latency_ms = int((time.time() - start_time) * 1000)
 
             response = {
-                "disease": disease_name,
+                "disease": disease_name.replace("_", " ").title(),
                 "treatment": treatment,
-                "confidence": f"{confidence:.2f}%",
-                "latency": f"{latency_ms} ms",
-                "gradcam_heatmap": "/static/mock_heatmap.jpg", # Path to generated XAI heatmap (requires more complex logic to generate dynamically)
-                "severity_percentage": f"{severity:.1f}%"
+                "confidence": f"{confidence:.2f}",
+                "latency": f"{latency_ms}",
+                "severity_percentage": f"{severity:.1f}"
             }
 
             return jsonify(response)

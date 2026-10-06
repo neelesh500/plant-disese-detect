@@ -139,6 +139,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData();
         formData.append('file', currentFile);
 
+        // Append Multimodal Environmental Data
+        if (document.getElementById('temperature-input')) {
+            formData.append('temperature', document.getElementById('temperature-input').value);
+            formData.append('humidity', document.getElementById('humidity-input').value);
+            formData.append('soil_moisture', document.getElementById('moisture-input').value);
+        }
+
         fetch('/predict', {
             method: 'POST',
             body: formData
@@ -160,6 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Extract numeric values
                 let confVal = parseFloat(data.confidence) || 0;
                 let latVal = parseFloat(data.latency) || 0;
+                let sevVal = parseFloat(data.severity_percentage) || 0;
 
                 // Show results
                 resultsContainer.classList.remove('hidden');
@@ -167,6 +175,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Animate numbers
                 animateValue(document.getElementById('r-confidence-val'), 0, confVal, 1500, true);
                 animateValue(document.getElementById('r-latency-val'), 0, latVal, 1200, false);
+                if (document.getElementById('r-severity-val')) {
+                    animateValue(document.getElementById('r-severity-val'), 0, sevVal, 1500, true);
+                }
 
                 resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
             })
@@ -198,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const agentCanvas = document.getElementById('agent-canvas');
     let stream = null;
 
-    function addMessage(text, sender='user') {
+    function addMessage(text, sender = 'user') {
         const msgDiv = document.createElement('div');
         msgDiv.className = 'message ' + sender;
         msgDiv.textContent = text;
@@ -250,15 +261,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         agentVoiceBtn.addEventListener('mousedown', () => {
             agentVoiceBtn.classList.add('listening');
-            try { recognition.start(); } catch(e) {}
+            try { recognition.start(); } catch (e) { }
         });
-        
+
         agentVoiceBtn.addEventListener('click', () => {
             if (agentVoiceBtn.classList.contains('listening')) {
                 recognition.stop();
             } else {
                 agentVoiceBtn.classList.add('listening');
-                try { recognition.start(); } catch(e) {}
+                try { recognition.start(); } catch (e) { }
             }
         });
     }
@@ -269,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
             addMessage('Closing AI Agent.', 'ai');
             setTimeout(() => agentContainer.classList.add('hidden'), 1000);
             stopCamera();
-        } 
+        }
         else if (cmd.includes('upload') || cmd.includes('browse') || cmd.includes('file')) {
             addMessage('Opening file browser.', 'ai');
             browseBtn.click();
@@ -325,13 +336,13 @@ document.addEventListener('DOMContentLoaded', () => {
         agentCanvas.width = agentCamera.videoWidth;
         agentCanvas.height = agentCamera.videoHeight;
         agentCanvas.getContext('2d').drawImage(agentCamera, 0, 0);
-        
+
         agentCanvas.toBlob((blob) => {
             const file = new File([blob], "camera_capture.jpg", { type: "image/jpeg" });
             const dataTransfer = new DataTransfer();
             dataTransfer.items.add(file);
             fileInput.files = dataTransfer.files;
-            
+
             // Re-use handleFile from the main script scope
             if (typeof handleFile === 'function') {
                 handleFile(file);
@@ -341,7 +352,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 'image/jpeg');
     });
 
-\n});
+    // Append slider listeners
+    ['temperature', 'humidity', 'moisture'].forEach(id => {
+        const input = document.getElementById(`${id}-input`);
+        const valSpan = document.getElementById(id === 'temperature' ? 'temp-val' : id === 'humidity' ? 'hum-val' : 'moist-val');
+        if (input && valSpan) {
+            input.addEventListener('input', (e) => {
+                valSpan.textContent = e.target.value;
+            });
+        }
+    });
+});
 
 // Initialize system debug logs
 console.log("AgriNet UI modules loaded.");
