@@ -1,8 +1,5 @@
 Flask
 Werkzeug
-tensorflow
+onnxruntime
 Pillow
 numpy
-pandas
-opencv-python
-scikit-image

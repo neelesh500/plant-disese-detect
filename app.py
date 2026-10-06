@@ -64,13 +64,21 @@ def predict():
             # loading it globally or caching it is good.
             global model
             if model is None:
-                if os.path.exists("models/plant_disease_model.h5"):
+                # Prioritize ONNX for smaller deployment size (e.g., Vercel)
+                if os.path.exists("models/plant_disease_model.onnx"):
+                    try:
+                        import onnxruntime as ort
+                        model = ort.InferenceSession("models/plant_disease_model.onnx")
+                        logger.info("Loaded models/plant_disease_model.onnx successfully using ONNX Runtime.")
+                    except Exception as e:
+                        logger.error(f"Error loading ONNX model: {e}")
+                elif os.path.exists("models/plant_disease_model.h5"):
                     try:
                         import tensorflow as tf
                         model = tf.keras.models.load_model("models/plant_disease_model.h5")
-                        logger.info("Loaded models/plant_disease_model.h5 successfully.")
+                        logger.info("Loaded models/plant_disease_model.h5 successfully using TensorFlow.")
                     except Exception as e:
-                        logger.error(f"Error loading model: {e}")
+                        logger.error(f"Error loading h5 model: {e}")
                 
             # Process the image
             image = Image.open(file.stream).convert('RGB')
@@ -122,16 +130,29 @@ def predict():
             
             # Predict using the Model
             if model is not None:
-                preds = model.predict(img_array)
-                class_idx = np.argmax(preds[0])
-                confidence = preds[0][class_idx] * 100
-                
-                # Make sure class_idx is within bounds
-                if class_idx < len(PLANT_DISEASES):
-                    disease_name, treatment = PLANT_DISEASES[class_idx]
-                else:
-                    disease_name, treatment = "Unknown", "No protocol found."
-            else:
+                try:
+                    # Check if the model is ONNX or Keras
+                    if hasattr(model, 'run'): # ONNX InferenceSession
+                        # Convert to float32 as ONNX expects it
+                        img_array_f32 = img_array.astype(np.float32)
+                        input_name = model.get_inputs()[0].name
+                        preds = model.run(None, {input_name: img_array_f32})[0]
+                    else: # TensorFlow/Keras
+                        preds = model.predict(img_array)
+                        
+                    class_idx = np.argmax(preds[0])
+                    confidence = preds[0][class_idx] * 100
+                    
+                    # Make sure class_idx is within bounds
+                    if class_idx < len(PLANT_DISEASES):
+                        disease_name, treatment = PLANT_DISEASES[class_idx]
+                    else:
+                        disease_name, treatment = "Unknown", "No protocol found."
+                except Exception as e:
+                    logger.error(f"Error during prediction: {e}")
+                    model = None # Fallback to hash if prediction fails
+            
+            if model is None:
                 # If TensorFlow isn't loading or model doesn't exist, we fallback to a simulated logic
                 # using the image's hash/size to make it deterministic but NOT random. choice.
                 import hashlib

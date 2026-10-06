@@ -5,4 +5,5 @@ test_commits.py
 __pycache__/
 venv/
 *.pyc
-models/
+models/*
+!models/*.onnx
