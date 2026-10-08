@@ -1,6 +1,7 @@
 import random
 import time
 
+# pyrefly: ignore [missing-import]
 from flask import Flask, jsonify, render_template, request
 
 # To fully run the model, you'd integrate TensorFlow or PyTorch here.
@@ -8,7 +9,9 @@ from flask import Flask, jsonify, render_template, request
 # from hybrid_model import HybridEnsembleModel
 import logging
 import os
+# pyrefly: ignore [missing-import]
 import numpy as np
+# pyrefly: ignore [missing-import]
 from PIL import Image
 import json
 
@@ -68,6 +71,7 @@ def predict():
                 # Prioritize ONNX for smaller deployment size (e.g., Vercel)
                 if os.path.exists("models/plant_disease_model.onnx"):
                     try:
+                        # pyrefly: ignore [missing-import]
                         import onnxruntime as ort
                         model = ort.InferenceSession("models/plant_disease_model.onnx")
                         logger.info("Loaded models/plant_disease_model.onnx successfully using ONNX Runtime.")
@@ -204,6 +208,59 @@ def predict():
         import traceback
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
+
+@app.route("/api/agent", methods=["POST"])
+def agent():
+    data = request.json
+    query = data.get("query", "")
+    
+    if not query:
+        return jsonify({"reply": "Please ask a question or give a command."}), 400
+        
+    try:
+        import google.generativeai as genai
+        # Initialize the API key from environment variable or hardcoded string
+        GOOGLE_API_KEY = "AQ.Ab8RN6JR7srg9sVyVZjFj5-RHo66jr2m9Vup9VAJK6LvdR2B8Q" 
+        genai.configure(api_key=GOOGLE_API_KEY)
+        
+        system_prompt = """
+        You are AgriNet AI, an advanced agronomy and plant disease assistant.
+        The user interacts with you through a voice and text interface.
+        If the user asks to "open camera", "turn on camera", or similar UI action, reply EXACTLY AND ONLY WITH: [ACTION: CAMERA]
+        If the user asks to "upload", "browse", or "select image", reply EXACTLY AND ONLY WITH: [ACTION: BROWSE]
+        If the user asks to "analyze", "detect", "check disease", reply EXACTLY AND ONLY WITH: [ACTION: ANALYZE]
+        If the user asks to "reset" or "clear", reply EXACTLY AND ONLY WITH: [ACTION: RESET]
+        If the user asks to "close" or "shut down agent", reply EXACTLY AND ONLY WITH: [ACTION: CLOSE]
+        Otherwise, answer their plant-related or farming-related question concisely in 1-2 sentences. Keep it very conversational and helpful. Do not use markdown format.
+        """
+        
+        model = genai.GenerativeModel('gemini-1.5-flash-latest', system_instruction=system_prompt)
+        response = model.generate_content(query)
+        reply_text = response.text.strip()
+        
+        # Determine if it's an action
+        action = None
+        if "[ACTION: CAMERA]" in reply_text:
+            action = "CAMERA"
+            reply_text = "Opening camera. Say 'capture' or press the button to take a photo."
+        elif "[ACTION: BROWSE]" in reply_text:
+            action = "BROWSE"
+            reply_text = "Opening file browser for you."
+        elif "[ACTION: ANALYZE]" in reply_text:
+            action = "ANALYZE"
+            reply_text = "Initializing inference pipeline. Standardizing inputs now."
+        elif "[ACTION: RESET]" in reply_text:
+            action = "RESET"
+            reply_text = "Resetting the workspace."
+        elif "[ACTION: CLOSE]" in reply_text:
+            action = "CLOSE"
+            reply_text = "Goodbye! Closing AI Agent."
+            
+        return jsonify({"reply": reply_text, "action": action})
+    
+    except Exception as e:
+        logger.error(f"Gemini API Error: {e}")
+        return jsonify({"reply": "I am experiencing network issues. Please try again later.", "action": None})
 
 
 if __name__ == "__main__":

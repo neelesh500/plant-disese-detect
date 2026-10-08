@@ -274,39 +274,60 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function processCommand(cmd) {
-        // Simple NLP Matching
-        if (cmd.includes('close') || cmd.includes('band')) {
-            addMessage('Closing AI Agent.', 'ai');
-            setTimeout(() => agentContainer.classList.add('hidden'), 1000);
-            stopCamera();
-        }
-        else if (cmd.includes('upload') || cmd.includes('browse') || cmd.includes('file')) {
-            addMessage('Opening file browser.', 'ai');
-            browseBtn.click();
-        }
-        else if (cmd.includes('detect') || cmd.includes('analyze') || cmd.includes('check') || cmd.includes('disease')) {
-            addMessage('Initializing Inference...', 'ai');
-            analyzeBtn.click();
-        }
-        else if (cmd.includes('reset') || cmd.includes('clear')) {
-            addMessage('Resetting workspace.', 'ai');
-            resetBtn.click();
-        }
-        else if (cmd.includes('camera') || cmd.includes('photo') || cmd.includes('capture') || cmd.includes('khicho')) {
-            addMessage('Opening camera. Say "click photo" or press Capture.', 'ai');
-            startCamera();
-        }
-        else if (cmd.includes('click') || cmd.includes('shoot') || cmd.includes('take')) {
+    async function processCommand(cmd) {
+        // Special strict UI override for capture action specifically (if video is on)
+        if (cmd.includes('click') || cmd.includes('shoot') || cmd.includes('take') || cmd.includes('capture')) {
             if (!agentCamera.classList.contains('hidden')) {
                 addMessage('Capturing photo...', 'ai');
                 agentCaptureBtn.click();
-            } else {
-                addMessage('Camera is not open. Please open camera first.', 'ai');
+                return;
             }
         }
-        else {
-            addMessage('Apologies, I could not understand. Try: "open camera", "upload image", "analyze", or "reset".', 'ai');
+
+        try {
+            // Show typing indicator
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message ai typing';
+            typingDiv.id = 'typing-indicator';
+            typingDiv.innerHTML = '<span class="dots">...</span>';
+            agentMessages.appendChild(typingDiv);
+            agentMessages.scrollTop = agentMessages.scrollHeight;
+
+            const response = await fetch('/api/agent', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: cmd })
+            });
+
+            const data = await response.json();
+
+            // Remove typing indicator
+            const indicator = document.getElementById('typing-indicator');
+            if (indicator) indicator.remove();
+
+            if (data.reply) {
+                addMessage(data.reply, 'ai');
+            }
+
+            // Excecute actions if commanded by Gemini
+            if (data.action === "CAMERA") {
+                startCamera();
+            } else if (data.action === "BROWSE") {
+                browseBtn.click();
+            } else if (data.action === "ANALYZE") {
+                analyzeBtn.click();
+            } else if (data.action === "RESET") {
+                resetBtn.click();
+            } else if (data.action === "CLOSE") {
+                setTimeout(() => agentContainer.classList.add('hidden'), 1000);
+                stopCamera();
+            }
+
+        } catch (error) {
+            console.error("Agent error:", error);
+            const indicator = document.getElementById('typing-indicator');
+            if (indicator) indicator.remove();
+            addMessage("Network connection to AI brain lost. Please try again.", 'ai');
         }
     }
 

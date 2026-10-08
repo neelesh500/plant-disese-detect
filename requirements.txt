@@ -3,3 +3,4 @@ Werkzeug
 onnxruntime
 Pillow
 numpy
+google-generativeai
