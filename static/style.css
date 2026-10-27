@@ -700,3 +700,42 @@ button {
     0% { transform: scale(1); }
     100% { transform: scale(1.1); }
 }
+/* Botanical palette overrides: keep the existing dashboard and interactions. */
+:root {
+    --bg-color: #f4f6ef;
+    --panel-bg: #fffefa;
+    --panel-border: #dce5d7;
+    --panel-border-hover: #8bae85;
+    --brand-primary: #39734a;
+    --brand-secondary: #285b38;
+    --brand-cyan: #62804d;
+    --text-primary: #203528;
+    --text-secondary: #596b5d;
+    --text-muted: #849184;
+}
+body { background-image: radial-gradient(ellipse at 8% 5%, #e8efe0 0, transparent 36%); }
+header { background: rgba(250, 251, 246, .94); border-color: var(--panel-border); }
+.glass-panel { backdrop-filter: none; box-shadow: 0 12px 32px rgba(39, 69, 43, .08); }
+.glass-panel:hover { border-color: var(--panel-border-hover); box-shadow: 0 14px 34px rgba(39, 69, 43, .12); }
+.hero h1 span { background: none; color: var(--brand-primary); -webkit-text-fill-color: currentColor; }
+.hero:hover h1 span { background: none; color: var(--brand-primary); -webkit-text-fill-color: currentColor; }
+.badge { color: var(--brand-secondary); background: #edf3e8; border-color: #d7e4d2; }
+.drag-area { border-color: #b8c9b2; }
+.treatment-box, .message.user { background: #f0f4ec; border-color: #e0e8dc; }
+.result-card, .metric-card, .upload-section, #ai-agent-container { background: var(--panel-bg); }
+.agent-header, .agent-input-area { background: #f0f4ec; }
+.message.ai { background: #e8f1e5; }
+#agent-input { color: var(--text-primary); background: #fffefa; border-color: #cbd8c7; }
+#agent-close-btn { color: var(--text-primary); }
+button:disabled { opacity: .65; cursor: wait; }
+@media (max-width: 700px) {
+    header { padding: 1rem 5%; }
+    nav { display: none; }
+    main { margin: 1.5rem auto; padding: 0 1rem; gap: 1rem; }
+    .hero, .upload-section { padding: 1.25rem; }
+    .hero h1 { font-size: clamp(2rem, 9vw, 3rem); }
+    .workspace { gap: 1rem; }
+    .metrics-row { grid-template-columns: 1fr; gap: .75rem; }
+    #ai-agent-container { left: 1rem; right: 1rem; bottom: 5.5rem; width: auto; height: min(70vh, 500px); }
+    #agent-toggle-btn { right: 1rem; bottom: 1rem; }
+}

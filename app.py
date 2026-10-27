@@ -1,4 +1,3 @@
-import random
 import time
 
 # pyrefly: ignore [missing-import]
@@ -85,109 +84,55 @@ def predict():
                     except Exception as e:
                         logger.error(f"Error loading h5 model: {e}")
                 
-            # Process the image
-            image = Image.open(file.stream).convert('RGB')
+            # Verify file contents, not only the supplied extension.
+            try:
+                file.stream.seek(0)
+                with Image.open(file.stream) as uploaded_image:
+                    uploaded_image.verify()
+                file.stream.seek(0)
+                image = Image.open(file.stream).convert('RGB')
+            except Exception:
+                return jsonify({"error": "Invalid or unreadable image file."}), 400
             image = image.resize((224, 224))
             img_array = np.array(image) / 255.0  # Normalize to [0, 1]
             img_array = np.expand_dims(img_array, axis=0) # Shape: (1, 224, 224, 3)
             
-            # Diseases List (Subset of PlantVillage for Mapping)
-            PLANT_DISEASES = [
-                ('Apple - Apple Scab', 'Apply zinc-based fungicide during blooming.'),
-                ('Apple - Black Rot', 'Prune infected branches and apply fungicide.'),
-                ('Apple - Cedar Apple Rust', 'Remove nearby cedar trees and use fungicides.'),
-                ('Apple - Healthy', 'No treatment required. Maintain overall plant health.'),
-                ('Blueberry - Healthy', 'No treatment required. Maintain overall plant health.'),
-                ('Cherry - Powdery Mildew', 'Apply sulfur or potassium bicarbonate.'),
-                ('Cherry - Healthy', 'No treatment required.'),
-                ('Corn - Gray leaf spot', 'Use resistant varieties; apply fungicide if severe.'),
-                ('Corn - Common rust', 'Apply fungicide when rust first appears.'),
-                ('Corn - Northern Leaf Blight', 'Plant resistant hybrids. Apply agricultural fungicides if lesions appear early in the season.'),
-                ('Corn - Healthy', 'No treatment required.'),
-                ('Grape - Black Rot', 'Apply fungicides properly timed.'),
-                ('Grape - Esca', 'Remove infected wood and apply wound protectants.'),
-                ('Grape - Leaf blight', 'Apply fungicides during the rainy season.'),
-                ('Grape - Healthy', 'No treatment required.'),
-                ('Orange - Citrus greening', 'Remove infected trees and control psyllid vectors.'),
-                ('Peach - Bacterial spot', 'Plant resistant varieties and maintain tree health.'),
-                ('Peach - Healthy', 'No treatment required.'),
-                ('Pepper, bell - Bacterial spot', 'Use copper-based sprays and pathogen-free seed.'),
-                ('Pepper, bell - Healthy', 'No treatment required.'),
-                ('Potato - Early blight', 'Use copper-based fungicides. Remove infected leaves.'),
-                ('Potato - Late blight', 'Use chlorothalonil. Avoid overhead irrigation and ensure good soil drainage.'),
-                ('Potato - Healthy', 'No treatment required.'),
-                ('Raspberry - Healthy', 'No treatment required.'),
-                ('Soybean - healthy', 'No treatment required.'),
-                ('Squash - Powdery mildew', 'Apply sulfur products and ensure good air circulation.'),
-                ('Strawberry - Leaf blight', 'Remove infected leaves from plants.'),
-                ('Strawberry - Healthy', 'No treatment required.'),
-                ('Tomato - Bacterial spot', 'Use copper fungicidal sprays.'),
-                ('Tomato - Early blight', 'Apply copper-based fungicides. Remove infected leaves to prevent spore spread.'),
-                ('Tomato - Late blight', 'Apply chlorothalonil. Avoid overhead watering.'),
-                ('Tomato - Leaf Mold', 'Increase air circulation and use fungicides.'),
-                ('Tomato - Septoria leaf spot', 'Remove infected lower leaves and use fungicide.'),
-                ('Tomato - Spider mites', 'Use horticultural oils or insecticidal soaps.'),
-                ('Tomato - Target Spot', 'Use appropriate fungicides.'),
-                ('Tomato - Tomato Yellow Leaf Curl Virus', 'Control whiteflies using insecticides or reflective mulches.'),
-                ('Tomato - Tomato mosaic virus', 'Use resistant varieties and remove infected plants.'),
-                ('Tomato - Healthy', 'No treatment required.')
-            ]
-            
-            # Predict using the Model
-            if model is not None:
-                try:
-                    # Check if the model is ONNX or Keras
-                    if hasattr(model, 'run'): # ONNX InferenceSession
-                        img_array_f32 = img_array.astype(np.float32)
-                        input_name = model.get_inputs()[0].name
-                        preds = model.run(None, {input_name: img_array_f32})[0]
-                    else: # TensorFlow/Keras
-                        preds = model.predict(img_array)
-                        
-                    class_idx = np.argmax(preds[0])
-                    confidence = preds[0][class_idx] * 100
-                    
-                    # Try to load real class names if trained
-                    class_names = []
-                    if os.path.exists("models/class_names.json"):
-                        with open("models/class_names.json", "r") as f:
-                            class_names = json.load(f)
-                    
-                    if class_names and class_idx < len(class_names):
-                        disease_name = class_names[class_idx]
-                        
-                        # Find matching treatment
-                        treatment = "No specific protocol found. Maintain general plant health."
-                        for d_mapping, t_mapping in PLANT_DISEASES:
-                            if d_mapping.lower() in disease_name.lower().replace("_", " ") or disease_name.lower().replace("_", " ") in d_mapping.lower():
-                                treatment = t_mapping
-                                break
-                    else:
-                        if class_idx < len(PLANT_DISEASES):
-                            disease_name, treatment = PLANT_DISEASES[class_idx]
-                        else:
-                            disease_name, treatment = "Unknown Anomaly", "No protocol found."
-                            
-                except Exception as e:
-                    logger.error(f"Error during prediction: {e}")
-                    return jsonify({"error": "Inference Engine Error"}), 500
-            else:
-                return jsonify({"error": "Model not loaded. Please train or deploy the model correctly."}), 500
-            
-            # Calculate severity based on AI confidence and Envrionmental Factors (Rule-based Multimodal Agronomy Engine)
-            # This makes the environmental inputs functional and biologically logical
-            if "healthy" in disease_name.lower():
-                severity = 0.0
-            else:
-                # Base severity inversely proportional to confidence (lower confidence = higher spread variability)
-                base_sev = max(10.0, 100 - confidence) 
-                
-                # Environmental multipliers (Fungal/Bacterial diseases spread faster in high humidity and moisture)
-                env_multiplier = 1.0
-                if humidity > 70.0: env_multiplier += 0.2
-                if temperature > 28.0 and temperature < 35.0: env_multiplier += 0.15 
-                
-                severity = min(100.0, base_sev * env_multiplier)
+            # Use only the model's trained class mapping; never guess class labels.
+            if model is None:
+                return jsonify({"error": "No trained model is available. Configure a trained ONNX model."}), 503
+            try:
+                if hasattr(model, 'run'):
+                    img_array_f32 = img_array.astype(np.float32)
+                    model_input = model.get_inputs()[0]
+                    input_name = model_input.name
+                    input_shape = model_input.shape
+                    if len(input_shape) != 4:
+                        raise ValueError("Model input must have four dimensions")
+                    if input_shape[1] == 3 and input_shape[2] == 224 and input_shape[3] == 224:
+                        img_array_f32 = np.transpose(img_array_f32, (0, 3, 1, 2))
+                    elif input_shape[1] not in (3, "3") or input_shape[2] not in (224, "224") or input_shape[3] not in (224, "224"):
+                        if input_shape[1] not in (224, "224") or input_shape[2] not in (224, "224") or input_shape[3] not in (3, "3"):
+                            raise ValueError("Model input dimensions are incompatible with 224x224 RGB preprocessing")
+                    preds = model.run(None, {input_name: img_array_f32})[0]
+                else:
+                    preds = model.predict(img_array, verbose=0)
+                scores = np.asarray(preds)
+                if scores.ndim != 2 or scores.shape[0] != 1 or scores.shape[1] == 0:
+                    raise ValueError("Invalid model output shape")
+                names_path = os.path.join("models", "class_names.json")
+                if not os.path.exists(names_path):
+                    return jsonify({"error": "Trained model class mapping (models/class_names.json) is missing."}), 503
+                with open(names_path, "r", encoding="utf-8") as names_file:
+                    class_names = json.load(names_file)
+                if not isinstance(class_names, list) or len(class_names) != scores.shape[1]:
+                    return jsonify({"error": "Model output dimensions do not match models/class_names.json."}), 503
+                class_idx = int(np.argmax(scores[0]))
+                disease_name = str(class_names[class_idx])
+                confidence = float(scores[0][class_idx]) * 100
+                treatment = "Consult a local plant health specialist for treatment guidance."
+            except Exception as e:
+                logger.error("Error during prediction: %s", e)
+                return jsonify({"error": "Inference failed. Check the uploaded image and model configuration."}), 500
 
             # Calculate actual processing latency
             latency_ms = int((time.time() - start_time) * 1000)
@@ -197,31 +142,36 @@ def predict():
                 "treatment": treatment,
                 "confidence": f"{confidence:.2f}",
                 "latency": f"{latency_ms}",
-                "severity_percentage": f"{severity:.1f}"
+                "severity_percentage": None
             }
 
             return jsonify(response)
 
         return jsonify({"error": "Invalid file type"}), 400
     except Exception as e:
-        logger.error(f"Error in prediction pipeline: {str(e)}")
-        import traceback
-        traceback.print_exc()
-        return jsonify({"error": str(e)}), 500
+        logger.error("Error in prediction pipeline: %s", e)
+        return jsonify({"error": "Unable to process this image. Check the file and model configuration."}), 500
 
 @app.route("/api/agent", methods=["POST"])
 def agent():
-    data = request.json
+    data = request.get_json(silent=True) or {}
     query = data.get("query", "")
-    
+    if not isinstance(query, str):
+        return jsonify({"error": "Query must be text."}), 400
+    query = query.strip()
+
     if not query:
         return jsonify({"reply": "Please ask a question or give a command."}), 400
         
     try:
+        api_key = os.environ.get("GEMINI_API_KEY")
+        model_name = os.environ.get("GEMINI_MODEL")
+        if not api_key:
+            return jsonify({"error": "Gemini is not configured: set GEMINI_API_KEY."}), 503
+        if not model_name:
+            return jsonify({"error": "Gemini is not configured: set GEMINI_MODEL to a supported model."}), 503
         import google.generativeai as genai
-        # Initialize the API key from environment variable or hardcoded string
-        GOOGLE_API_KEY = "AQ.Ab8RN6JR7srg9sVyVZjFj5-RHo66jr2m9Vup9VAJK6LvdR2B8Q" 
-        genai.configure(api_key=GOOGLE_API_KEY)
+        genai.configure(api_key=api_key)
         
         system_prompt = """
         You are AgriNet AI, an advanced agronomy and plant disease assistant.
@@ -234,7 +184,7 @@ def agent():
         Otherwise, answer their plant-related or farming-related question concisely in 1-2 sentences. Keep it very conversational and helpful. Do not use markdown format.
         """
         
-        model = genai.GenerativeModel('gemini-1.5-flash-latest', system_instruction=system_prompt)
+        model = genai.GenerativeModel(model_name, system_instruction=system_prompt)
         response = model.generate_content(query)
         reply_text = response.text.strip()
         
@@ -259,8 +209,8 @@ def agent():
         return jsonify({"reply": reply_text, "action": action})
     
     except Exception as e:
-        logger.error(f"Gemini API Error: {e}")
-        return jsonify({"reply": "I am experiencing network issues. Please try again later.", "action": None})
+        logger.error("Gemini API request failed: %s", type(e).__name__)
+        return jsonify({"error": "Gemini request failed. Check the configured model and API availability."}), 502
 
 
 if __name__ == "__main__":

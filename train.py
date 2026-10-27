@@ -86,9 +86,4 @@ if __name__ == "__main__":
         print("✅ Training Complete. Best model saved to models/plant_disease_model.h5")
         
     else:
-        print(f"\n⚠️ Dataset folder '{DATASET_PATH}' not found.")
-        print("To train the model, download the PlantVillage dataset unzipped into a folder named 'dataset'.")
-        print("For now, saving a blank structure to 'models/plant_disease_model.h5' to allow app.py to initialize.")
-        # Save a basic untaught model for structural use
-        model.save("models/plant_disease_model.h5")
-        print("✅ Blank model saved.")
+        raise SystemExit(f"Dataset folder '{DATASET_PATH}' not found. No model was trained or saved.")

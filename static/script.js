@@ -152,6 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
             .then(response => response.json())
             .then(data => {
+                if (!data || !data.disease) throw new Error(data && data.error ? data.error : 'Invalid prediction response.');
                 // Revert state
                 analyzeBtn.innerHTML = `
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -167,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Extract numeric values
                 let confVal = parseFloat(data.confidence) || 0;
                 let latVal = parseFloat(data.latency) || 0;
-                let sevVal = parseFloat(data.severity_percentage) || 0;
+                const sevVal = data.severity_percentage == null ? null : parseFloat(data.severity_percentage);
 
                 // Show results
                 resultsContainer.classList.remove('hidden');
@@ -175,15 +176,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Animate numbers
                 animateValue(document.getElementById('r-confidence-val'), 0, confVal, 1500, true);
                 animateValue(document.getElementById('r-latency-val'), 0, latVal, 1200, false);
-                if (document.getElementById('r-severity-val')) {
-                    animateValue(document.getElementById('r-severity-val'), 0, sevVal, 1500, true);
+                const severityValue = document.getElementById('r-severity-val');
+                if (severityValue) {
+                    if (Number.isFinite(sevVal)) animateValue(severityValue, 0, sevVal, 1500, true);
+                    else severityValue.textContent = '—';
                 }
 
                 resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
             })
             .catch(error => {
                 console.error('Inference Error:', error);
-                analyzeBtn.textContent = "Pipeline Error. Retry.";
+                analyzeBtn.textContent = error.message || "Pipeline Error. Retry.";
                 analyzeBtn.disabled = false;
                 previewArea.classList.remove('scanning');
 
@@ -227,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     agentSendBtn.addEventListener('click', () => {
-        const text = agentInput.value.trim().toLowerCase();
+        const text = agentInput.value.trim();
         if (text) {
             addMessage(text, 'user');
             agentInput.value = '';
@@ -276,7 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function processCommand(cmd) {
         // Special strict UI override for capture action specifically (if video is on)
-        if (cmd.includes('click') || cmd.includes('shoot') || cmd.includes('take') || cmd.includes('capture')) {
+        if (cmd.toLowerCase().includes('click') || cmd.toLowerCase().includes('shoot') || cmd.toLowerCase().includes('take') || cmd.toLowerCase().includes('capture')) {
             if (!agentCamera.classList.contains('hidden')) {
                 addMessage('Capturing photo...', 'ai');
                 agentCaptureBtn.click();
@@ -305,33 +308,29 @@ document.addEventListener('DOMContentLoaded', () => {
             const indicator = document.getElementById('typing-indicator');
             if (indicator) indicator.remove();
 
-            if (data.reply) {
-                addMessage(data.reply, 'ai');
+            if (!response.ok || !data || typeof data.reply !== 'string') {
+                throw new Error(data && data.error ? data.error : 'Invalid response from AI service.');
             }
-
-            // Excecute actions if commanded by Gemini
-            if (data.action === "CAMERA") {
-                startCamera();
-            } else if (data.action === "BROWSE") {
-                browseBtn.click();
-            } else if (data.action === "ANALYZE") {
-                analyzeBtn.click();
-            } else if (data.action === "RESET") {
-                resetBtn.click();
-            } else if (data.action === "CLOSE") {
-                setTimeout(() => agentContainer.classList.add('hidden'), 1000);
-                stopCamera();
-            }
+            addMessage(data.reply, 'ai');
+            const actions = {
+                CAMERA: startCamera,
+                BROWSE: () => browseBtn.click(),
+                ANALYZE: () => analyzeBtn.click(),
+                RESET: () => { stopCamera(); resetBtn.click(); },
+                CLOSE: () => { stopCamera(); setTimeout(() => agentContainer.classList.add('hidden'), 1000); }
+            };
+            if (data.action && actions[data.action]) actions[data.action]();
 
         } catch (error) {
             console.error("Agent error:", error);
             const indicator = document.getElementById('typing-indicator');
             if (indicator) indicator.remove();
-            addMessage("Network connection to AI brain lost. Please try again.", 'ai');
+            addMessage(error.message || "Network connection to AI brain lost. Please try again.", 'ai');
         }
     }
 
     function startCamera() {
+        if (stream) return;
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: true }).then((vidStream) => {
                 stream = vidStream;
@@ -341,6 +340,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }).catch(err => {
                 addMessage("Unable to access camera.", 'ai');
             });
+        } else {
+            addMessage("Camera access is unavailable in this browser or page context.", 'ai');
         }
     }
 
@@ -349,25 +350,23 @@ document.addEventListener('DOMContentLoaded', () => {
             stream.getTracks().forEach(track => track.stop());
             stream = null;
         }
+        agentCamera.srcObject = null;
         agentCamera.classList.add('hidden');
         agentCaptureBtn.classList.add('hidden');
     }
 
     agentCaptureBtn.addEventListener('click', () => {
+        if (!agentCamera.videoWidth || !agentCamera.videoHeight) {
+            addMessage("Camera is not ready yet. Please wait and try again.", 'ai');
+            return;
+        }
         agentCanvas.width = agentCamera.videoWidth;
         agentCanvas.height = agentCamera.videoHeight;
         agentCanvas.getContext('2d').drawImage(agentCamera, 0, 0);
-
         agentCanvas.toBlob((blob) => {
+            if (!blob) { addMessage("Could not capture an image. Please try again.", 'ai'); return; }
             const file = new File([blob], "camera_capture.jpg", { type: "image/jpeg" });
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(file);
-            fileInput.files = dataTransfer.files;
-
-            // Re-use handleFile from the main script scope
-            if (typeof handleFile === 'function') {
-                handleFile(file);
-            }
+            handleFile(file);
             stopCamera();
             addMessage("Image captured and loaded to workspace.", 'ai');
         }, 'image/jpeg');
