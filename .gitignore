@@ -7,3 +7,6 @@ venv/
 *.pyc
 models/*
 !models/*.onnx
+.env
+.env.*
+!.env.example

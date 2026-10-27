@@ -1,96 +1,3 @@
-import time
-
-# pyrefly: ignore [missing-import]
-from flask import Flask, jsonify, render_template, request
-
-# To fully run the model, you'd integrate TensorFlow or PyTorch here.
-# import tensorflow as tf
-# from hybrid_model import HybridEnsembleModel
-import logging
-import os
-# pyrefly: ignore [missing-import]
-import numpy as np
-# pyrefly: ignore [missing-import]
-from PIL import Image
-import json
-
-# Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
-
-app = Flask(__name__)
-
-model = None
-# Allowed extensions
-ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
-
-def allowed_file(filename):
-    return (
-        "." in filename
-        and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
-    )
-
-
-@app.route("/")
-def index():
-    return render_template("index.html")
-
-
-@app.route("/predict", methods=["POST"])
-def predict():
-    if "file" not in request.files:
-        logger.warning("Predict endpoint hit with no file uploaded.")
-        return jsonify({"error": "No file uploaded"}), 400
-
-    file = request.files["file"]
-
-    if file.filename == "":
-        logger.warning("Predict endpoint hit with empty filename.")
-        return jsonify({"error": "No file selected"}), 400
-
-    try:
-        if file and allowed_file(file.filename):
-            logger.info(f"Processing uploaded file: {file.filename}")
-            
-            # Start timer for actual latency measurement
-            start_time = time.time()
-            
-            # Extract Multimodal Environmental Inputs
-            temperature = float(request.form.get("temperature", 25.0))
-            humidity = float(request.form.get("humidity", 60.0))
-            soil_moisture = float(request.form.get("soil_moisture", 40.0))
-            
-            logger.info(f"Received Environmental Data -> Temp: {temperature}C, Humidity: {humidity}%, Moisture: {soil_moisture}%")
-
-            # Try loading the model dynamically if not loaded
-            # Note: For production, it's better to load the model globally, but for this mini-project, 
-            # loading it globally or caching it is good.
-            global model
-            if model is None:
-                # Prioritize ONNX for smaller deployment size (e.g., Vercel)
-                if os.path.exists("models/plant_disease_model.onnx"):
-                    try:
-                        # pyrefly: ignore [missing-import]
-                        import onnxruntime as ort
-                        model = ort.InferenceSession("models/plant_disease_model.onnx")
-                        logger.info("Loaded models/plant_disease_model.onnx successfully using ONNX Runtime.")
-                    except Exception as e:
-                        logger.error(f"Error loading ONNX model: {e}")
-                elif os.path.exists("models/plant_disease_model.h5"):
-                    try:
-                        import tensorflow as tf
-                        model = tf.keras.models.load_model("models/plant_disease_model.h5")
-                        logger.info("Loaded models/plant_disease_model.h5 successfully using TensorFlow.")
-                    except Exception as e:
-                        logger.error(f"Error loading h5 model: {e}")
-                
-            # Verify file contents, not only the supplied extension.
-            try:
-                file.stream.seek(0)
-                with Image.open(file.stream) as uploaded_image:
-                    uploaded_image.verify()
-                file.stream.seek(0)
-                image = Image.open(file.stream).convert('RGB')
             except Exception:
                 return jsonify({"error": "Invalid or unreadable image file."}), 400
             image = image.resize((224, 224))
@@ -164,7 +71,7 @@ def agent():
         return jsonify({"reply": "Please ask a question or give a command."}), 400
         
     try:
-        api_key = os.environ.get("GEMINI_API_KEY")
+        api_key = os.environ.get("GEMINI_API_KEY") 
         model_name = os.environ.get("GEMINI_MODEL")
         if not api_key:
             return jsonify({"error": "Gemini is not configured: set GEMINI_API_KEY."}), 503
@@ -184,9 +91,15 @@ def agent():
         Otherwise, answer their plant-related or farming-related question concisely in 1-2 sentences. Keep it very conversational and helpful. Do not use markdown format.
         """
         
-        model = genai.GenerativeModel(model_name, system_instruction=system_prompt)
-        response = model.generate_content(query)
-        reply_text = response.text.strip()
+        
+        agent_model = genai.GenerativeModel(
+            model_name,
+            system_instruction=system_prompt
+        )
+        response = agent_model.generate_content(query)
+        reply_text = (getattr(response, "text", None) or "").strip()
+        if not reply_text:
+            return jsonify({"error": "Gemini returned an empty response. Please try again."}), 502
         
         # Determine if it's an action
         action = None
@@ -213,8 +126,3 @@ def agent():
         return jsonify({"error": "Gemini request failed. Check the configured model and API availability."}), 502
 
 
-if __name__ == "__main__":
-    print("🌿 AgriNet AI - Deep Learning Server Started")
-    print("Serving on http://127.0.0.1:5000")
-    # In production, do not use debug=True
-    app.run(debug=True, port=5000)
