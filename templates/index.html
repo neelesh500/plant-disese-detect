@@ -30,25 +30,29 @@
             AgriNet <span>AI</span>
         </div>
         <nav>
-            <a href="#" class="active">Dashboard</a>
-            <a href="#">Analytics</a>
-            <a href="#">Edge Nodes</a>
+            <a href="#dashboard" class="active">Dashboard</a>
+            <a href="#plant-analysis">Plant Analysis</a>
+            <a href="#analytics">Analytics</a>
         </nav>
     </header>
 
     <main>
-        <section class="hero glass-panel" data-tilt>
+        <section class="hero glass-panel" id="dashboard" data-tilt>
             <div class="hero-content">
-                <div class="badge">Kaggle-Trained AI Architecture</div>
-                <h1>Deep Learning <span>Plant Diagnostic</span> Engine</h1>
-                <p>Upload a leaf image to instantly detect anomalies, utilizing our hybrid ML & CNN pipeline processing
-                    on ultra-low latency edge devices.</p>
+                <div class="badge">AgriNet AI · Plant health workspace</div>
+                <h1>Understand your plant’s <span>health</span></h1>
+                <p>Analyze a leaf image and review the model’s findings and recommended care protocol.</p>
             </div>
         </section>
 
         <!-- Main workspace containing upload & results side by side or stacked -->
         <div class="workspace">
-            <section class="upload-section glass-panel" id="upload-panel" data-tilt>
+            <section class="upload-section glass-panel" id="upload-panel" data-tilt aria-labelledby="analysis-title">
+                <div class="section-heading">
+                    <span class="section-kicker">01 / Plant analysis</span>
+                    <h2 id="analysis-title">Add a leaf image</h2>
+                    <p>Choose a clear image of the affected leaf to begin.</p>
+                </div>
                 <div class="drag-area" id="drag-area">
                     <div class="icon-orb">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -59,7 +63,7 @@
                         </svg>
                     </div>
                     <h3>Upload Leaf Specimen</h3>
-                    <p class="subtitle">Drag & drop your structural imagery here</p>
+                    <p class="subtitle">Drag and drop a leaf image here, or browse your files</p>
 
                     <!-- Multimodal Envrionmental Data Collection -->
                     <div class="multimodal-inputs"
@@ -117,7 +121,7 @@
 
             <section class="results-section hidden" id="results-container">
                 <div class="glass-panel result-card main-result" data-tilt>
-                    <div class="header-tag">Diagnostic Result</div>
+                    <div class="header-tag">Recent prediction</div>
                     <h2 id="r-disease" class="disease-title">Analyzing...</h2>
                     <div class="treatment-box">
                         <div class="treatment-icon">
@@ -135,6 +139,10 @@
                     </div>
                 </div>
 
+                <div class="results-heading" id="analytics">
+                    <span class="section-kicker">02 / Analytics</span>
+                    <h3>Prediction metrics</h3>
+                </div>
                 <div class="metrics-row">
                     <div class="glass-panel metric-card" data-tilt>
                         <svg class="metric-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
