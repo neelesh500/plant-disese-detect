@@ -4,3 +4,4 @@ onnxruntime
 Pillow
 numpy
 google-generativeai
+python-dotenv

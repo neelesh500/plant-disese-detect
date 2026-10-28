@@ -1,10 +1,23 @@
 # Plant Disease Detection Web Application
 
 ## Quick Setup
-\\ash
+```bash
 pip install -r requirements.txt
+cp .env.example .env
+```
+
+Then update `.env`:
+
+```env
+GEMINI_API_KEY=your_real_key_here
+GEMINI_MODEL=gemini-2.5-flash
+```
+
+Run the server:
+
+```bash
 python app.py
-\
+```
 **Pratham Yadav, Narendra Choudhary, Neelesh Tewari, Prerak Goswami**
 
 ---
