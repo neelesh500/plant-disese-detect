@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgriNet - Plant Disease Detection</title>
+    <title>AgriNet AI - Smart Plant Health & Agronomy Portal</title>
     <!-- Google Fonts: Outfit -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -14,193 +14,735 @@
 
 <body>
 
-    <!-- Ambient glowing orbs (very subtle) -->
+    <!-- Ambient glowing orbs -->
     <div class="ambient-orb orb-1"></div>
     <div class="ambient-orb orb-2"></div>
 
+    <!-- HEADER -->
     <header>
         <div class="logo">
-            <svg class="leaf-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            <svg class="leaf-icon" width="26" height="26" viewBox="0 0 24 24" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
                 <path d="M2.5 13.5C2.5 13.5 1 5.5 10 2L13.5 5.5V11C13.5 11 16 7 21 7C21 7 23 18 13.5 21L11 18.5V14.5"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M12 22L12 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M12 22L12 11" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
                     stroke-linejoin="round" />
             </svg>
             AgriNet <span>AI</span>
         </div>
         <nav>
-            <a href="#dashboard" class="active">Dashboard</a>
-            <a href="#plant-analysis">Plant Analysis</a>
-            <a href="#analytics">Analytics</a>
+            <a href="#feature-nav" class="nav-link active" data-target="detector">🌿 Leaf Doctor</a>
+            <a href="#feature-nav" class="nav-link" data-target="fertilizer">🧪 Fertilizer Calc</a>
+            <a href="#feature-nav" class="nav-link" data-target="mandi">🌾 Mandi Bhav</a>
+            <a href="#feature-nav" class="nav-link" data-target="pests">🐛 Pest Guide</a>
+            <a href="#feature-nav" class="nav-link" data-target="organic">🌱 Bio-Lab</a>
+            <a href="#feature-nav" class="nav-link" data-target="calendar">🌦️ Crop Calendar</a>
+            <a href="#feature-nav" class="nav-link" data-target="soil">🩺 Soil Health</a>
+            <a href="#feature-nav" class="nav-link" data-target="history">📜 History</a>
         </nav>
+        <div class="header-actions">
+            <button class="btn-agent-top" id="top-agent-btn">
+                <span class="pulse-dot"></span> Ask AgriNet AI
+            </button>
+        </div>
     </header>
 
     <main>
+        <!-- HERO SECTION -->
         <section class="hero glass-panel" id="dashboard" data-tilt>
             <div class="hero-content">
-                <div class="badge">AgriNet AI · Plant health workspace</div>
-                <h1>Understand your plant’s <span>health</span></h1>
-                <p>Analyze a leaf image and review the model’s findings and recommended care protocol.</p>
+                <div class="badge">AgriNet AI · Smart Agricultural Super-Platform</div>
+                <h1>Intelligent Care for <span>Bountiful Crops</span></h1>
+                <p>Advanced Deep Learning disease detection, certified chemical & organic medicines, precise NPK fertilizer calculators, live mandi market prices, and 24/7 AI Agronomy Assistant.</p>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat-item">
+                    <span class="stat-number">38+</span>
+                    <span class="stat-label">Plant Disease Classes</span>
+                </div>
+                <div class="hero-stat-item">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Dosage & Medicine Data</span>
+                </div>
+                <div class="hero-stat-item">
+                    <span class="stat-number">8-in-1</span>
+                    <span class="stat-label">Integrated Tools</span>
+                </div>
             </div>
         </section>
 
-        <!-- Main workspace containing upload & results side by side or stacked -->
-        <div class="workspace">
-            <section class="upload-section glass-panel" id="upload-panel" data-tilt aria-labelledby="analysis-title">
-                <div class="section-heading">
-                    <span class="section-kicker">01 / Plant analysis</span>
-                    <h2 id="analysis-title">Add a leaf image</h2>
-                    <p>Choose a clear image of the affected leaf to begin.</p>
+        <!-- FEATURE SWITCHER BAR (DEDICATED BUTTONS) -->
+        <section class="feature-bar-section" id="feature-nav">
+            <div class="section-title-wrap">
+                <span class="section-kicker">Interactive Agricultural Hub</span>
+                <h3>Select a Dedicated Tool</h3>
+            </div>
+            <div class="feature-buttons-grid">
+                <button class="feature-btn active" data-tab="detector">
+                    <span class="f-icon">🌿</span>
+                    <div class="f-text">
+                        <strong>AI Leaf Doctor</strong>
+                        <small>Disease Detection & Medicines</small>
+                    </div>
+                </button>
+                <button class="feature-btn" data-tab="fertilizer">
+                    <span class="f-icon">🧪</span>
+                    <div class="f-text">
+                        <strong>Fertilizer Calculator</strong>
+                        <small>Urea, DAP, MOP & NPK Split</small>
+                    </div>
+                </button>
+                <button class="feature-btn" data-tab="mandi">
+                    <span class="f-icon">🌾</span>
+                    <div class="f-text">
+                        <strong>Mandi Market Bhav</strong>
+                        <small>Live Rates & Trade Signals</small>
+                    </div>
+                </button>
+                <button class="feature-btn" data-tab="pests">
+                    <span class="f-icon">🐛</span>
+                    <div class="f-text">
+                        <strong>Pest & Weed Guide</strong>
+                        <small>Identification & Insecticides</small>
+                    </div>
+                </button>
+                <button class="feature-btn" data-tab="organic">
+                    <span class="f-icon">🌱</span>
+                    <div class="f-text">
+                        <strong>Organic Bio-Lab</strong>
+                        <small>Jeevamrut & Desi Recipes</small>
+                    </div>
+                </button>
+                <button class="feature-btn" data-tab="calendar">
+                    <span class="f-icon">🌦️</span>
+                    <div class="f-text">
+                        <strong>Crop Calendar</strong>
+                        <small>Kharif, Rabi & Zaid Sowing</small>
+                    </div>
+                </button>
+                <button class="feature-btn" data-tab="soil">
+                    <span class="f-icon">🩺</span>
+                    <div class="f-text">
+                        <strong>Soil Health Advisor</strong>
+                        <small>pH Analysis & Lime/Gypsum</small>
+                    </div>
+                </button>
+                <button class="feature-btn" data-tab="history">
+                    <span class="f-icon">📜</span>
+                    <div class="f-text">
+                        <strong>Scan History</strong>
+                        <small>Past Prescriptions & Records</small>
+                    </div>
+                </button>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- TAB 1: AI LEAF DOCTOR & DISEASE SCANNER    -->
+        <!-- ========================================== -->
+        <div class="tab-pane active" id="pane-detector">
+            <!-- QUICK TEST SAMPLES BAR -->
+            <div class="quick-samples-bar glass-panel">
+                <div class="sample-label">
+                    <span>⚡ Quick Demo Samples:</span>
+                    <small>Click any sample to test detection instantly without uploading:</small>
                 </div>
-                <div class="drag-area" id="drag-area">
-                    <div class="icon-orb">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="17 8 12 3 7 8"></polyline>
-                            <line x1="12" y1="3" x2="12" y2="15"></line>
-                        </svg>
-                    </div>
-                    <h3>Upload Leaf Specimen</h3>
-                    <p class="subtitle">Drag and drop a leaf image here, or browse your files</p>
-
-                    <!-- Multimodal Envrionmental Data Collection -->
-                    <div class="multimodal-inputs"
-                        style="margin-top: 20px; text-align: left; background: rgba(0,0,0,0.1); padding: 15px; border-radius: 10px;">
-                        <h4 style="margin-bottom: 10px; font-size: 0.9em; opacity: 0.8;">Environmental Context
-                            (Optional)</h4>
-
-                        <label for="temperature-input"
-                            style="font-size: 0.8em; display:flex; justify-content:space-between;">
-                            Temperature (°C) <span id="temp-val">25</span>
-                        </label>
-                        <input type="range" id="temperature-input" min="0" max="50" value="25"
-                            style="width: 100%; margin-bottom: 10px;">
-
-                        <label for="humidity-input"
-                            style="font-size: 0.8em; display:flex; justify-content:space-between;">
-                            Humidity (%) <span id="hum-val">60</span>
-                        </label>
-                        <input type="range" id="humidity-input" min="0" max="100" value="60"
-                            style="width: 100%; margin-bottom: 10px;">
-
-                        <label for="moisture-input"
-                            style="font-size: 0.8em; display:flex; justify-content:space-between;">
-                            Soil Moisture (%) <span id="moist-val">40</span>
-                        </label>
-                        <input type="range" id="moisture-input" min="0" max="100" value="40" style="width: 100%;">
-                    </div>
-                    <div class="divider">
-                        <span>OR</span>
-                    </div>
-                    <button class="btn-outline" id="browse-btn">
-                        <span>Browse Files</span>
+                <div class="sample-chips">
+                    <button class="sample-chip" data-sample="tomato_early_blight">
+                        🍅 Tomato Early Blight
                     </button>
-                    <input type="file" id="file-input" hidden accept="image/*">
+                    <button class="sample-chip" data-sample="potato_late_blight">
+                        🥔 Potato Late Blight
+                    </button>
+                    <button class="sample-chip" data-sample="apple_scab">
+                        🍎 Apple Scab
+                    </button>
+                    <button class="sample-chip" data-sample="healthy_corn">
+                        🌽 Healthy Corn
+                    </button>
                 </div>
+            </div>
 
-                <div class="preview-area hidden" id="preview-area">
-                    <div class="image-wrapper">
-                        <img id="image-preview" src="" alt="Specimen Preview">
-                        <div class="scan-line"></div>
+            <div class="workspace">
+                <!-- UPLOAD SECTION -->
+                <section class="upload-section glass-panel" id="upload-panel" data-tilt aria-labelledby="analysis-title">
+                    <div class="section-heading">
+                        <span class="section-kicker">01 / Specimen Acquisition</span>
+                        <h2 id="analysis-title">Leaf Image Diagnostics</h2>
+                        <p>Upload a clear photo, capture via live camera, or pick a sample above.</p>
                     </div>
-                    <div class="controls">
-                        <button class="btn-primary glow-on-hover" id="analyze-btn">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    
+                    <div class="drag-area" id="drag-area">
+                        <div class="icon-orb">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                        </div>
+                        <h3>Upload Leaf Specimen</h3>
+                        <p class="subtitle">Drag & drop your leaf photo here, or browse files</p>
+
+                        <!-- Environmental Context -->
+                        <div class="multimodal-inputs">
+                            <h4>🌱 Environmental Context (Multimodal Severity Tuning)</h4>
+                            <div class="slider-row">
+                                <label for="temperature-input">
+                                    <span>Temperature (°C)</span>
+                                    <strong id="temp-val">25</strong>
+                                </label>
+                                <input type="range" id="temperature-input" min="5" max="48" value="25">
+                            </div>
+                            <div class="slider-row">
+                                <label for="humidity-input">
+                                    <span>Relative Humidity (%)</span>
+                                    <strong id="hum-val">60</strong>
+                                </label>
+                                <input type="range" id="humidity-input" min="10" max="100" value="60">
+                            </div>
+                            <div class="slider-row">
+                                <label for="moisture-input">
+                                    <span>Soil Moisture (%)</span>
+                                    <strong id="moist-val">40</strong>
+                                </label>
+                                <input type="range" id="moisture-input" min="10" max="100" value="40">
+                            </div>
+                        </div>
+
+                        <div class="upload-btn-group">
+                            <button class="btn-outline" id="browse-btn">
+                                📁 Browse Files
+                            </button>
+                            <button class="btn-outline" id="camera-trigger-btn">
+                                📷 Open Camera
+                            </button>
+                        </div>
+                        <input type="file" id="file-input" hidden accept="image/*">
+                    </div>
+
+                    <!-- PREVIEW & SCANNING -->
+                    <div class="preview-area hidden" id="preview-area">
+                        <div class="image-wrapper">
+                            <img id="image-preview" src="" alt="Specimen Preview">
+                            <div class="scan-line"></div>
+                        </div>
+                        <div class="controls">
+                            <button class="btn-primary glow-on-hover" id="analyze-btn">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                Init Inference
+                            </button>
+                            <button class="btn-ghost" id="reset-btn">Reset</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- RESULTS SECTION -->
+                <section class="results-section hidden" id="results-container">
+                    <!-- MAIN DIAGNOSIS CARD -->
+                    <div class="glass-panel result-card main-result" data-tilt>
+                        <div class="card-header-bar">
+                            <span class="header-tag">Official Plant Pathology Report</span>
+                            <span class="risk-badge" id="r-risk-badge">High Risk</span>
+                        </div>
+                        
+                        <h2 id="r-disease" class="disease-title">Analyzing...</h2>
+                        <div class="pathogen-bar">
+                            <span class="meta-label">Pathogen / Crop:</span>
+                            <span id="r-pathogen" class="meta-val">Awaiting Inference</span>
+                        </div>
+
+                        <!-- BRIEF OVERVIEW -->
+                        <div class="info-block brief-block">
+                            <h4>📖 Disease Overview & Pathology</h4>
+                            <p id="r-brief">Processing image specimen...</p>
+                        </div>
+
+                        <!-- SYMPTOMS CHECKLIST -->
+                        <div class="info-block symptoms-block">
+                            <h4>🔍 Diagnostic Symptoms Observed</h4>
+                            <ul id="r-symptoms-list" class="styled-list">
+                                <li>Awaiting symptoms analysis...</li>
+                            </ul>
+                        </div>
+
+                        <!-- CHEMICAL MEDICINES BOX -->
+                        <div class="info-block medicines-block">
+                            <div class="block-title-row">
+                                <h4>💊 Certified Chemical Medicines (Brand & Exact Dosage)</h4>
+                                <span class="badge-pill">Fungicide / Bactericide</span>
+                            </div>
+                            <div id="r-medicines-list" class="medicines-grid">
+                                <!-- Dynamic Medicines Cards -->
+                            </div>
+                        </div>
+
+                        <!-- ORGANIC SOLUTIONS BOX -->
+                        <div class="info-block organic-block">
+                            <div class="block-title-row">
+                                <h4>🌱 Best Organic & Bio-Biological Solutions</h4>
+                                <span class="badge-pill green">Zero Chemical / Desi</span>
+                            </div>
+                            <div id="r-organic-list" class="organic-grid">
+                                <!-- Dynamic Organic Cards -->
+                            </div>
+                        </div>
+
+                        <!-- CULTURAL PREVENTION -->
+                        <div class="info-block prevention-block">
+                            <h4>🛡️ Cultural & Preventive Farm Management</h4>
+                            <ul id="r-prevention-list" class="styled-list">
+                                <li>Loading cultural recommendations...</li>
+                            </ul>
+                        </div>
+
+                        <!-- ACTION TOOLBAR -->
+                        <div class="prescription-actions">
+                            <button class="btn-action" id="btn-read-tts">
+                                🔊 Listen Prescription
+                            </button>
+                            <button class="btn-action" id="btn-print-report">
+                                📄 Print / Save Report
+                            </button>
+                            <button class="btn-action" id="btn-ask-agent-disease">
+                                💬 Ask AI About This
+                            </button>
+                            <button class="btn-action" id="btn-goto-fertilizer">
+                                🧪 Calculate Fertilizer
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ANALYTICS METRICS ROW -->
+                    <div class="results-heading">
+                        <span class="section-kicker">02 / Telemetry & Confidence</span>
+                        <h3>Model Analytics</h3>
+                    </div>
+                    <div class="metrics-row">
+                        <div class="glass-panel metric-card" data-tilt>
+                            <svg class="metric-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M2 12h4l3-9 5 18 3-9h5"></path>
+                            </svg>
+                            <h4>Model Confidence</h4>
+                            <div class="value-wrap">
+                                <span class="value" id="r-confidence-val">0</span>
+                                <span class="unit">%</span>
+                            </div>
+                        </div>
+                        <div class="glass-panel metric-card" data-tilt>
+                            <svg class="metric-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
                                 <circle cx="12" cy="12" r="10"></circle>
                                 <polyline points="12 6 12 12 16 14"></polyline>
                             </svg>
-                            Init Inference
-                        </button>
-                        <button class="btn-ghost" id="reset-btn">Reset</button>
-                    </div>
-                </div>
-            </section>
-
-            <section class="results-section hidden" id="results-container">
-                <div class="glass-panel result-card main-result" data-tilt>
-                    <div class="header-tag">Recent prediction</div>
-                    <h2 id="r-disease" class="disease-title">Analyzing...</h2>
-                    <div class="treatment-box">
-                        <div class="treatment-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <path d="M11 20A7 7 0 0 1 4 13V6l7-4 7 4v7a7 7 0 0 1-7 7Z"></path>
-                                <path d="M11 10.5V17"></path>
-                                <path d="M8 14h6"></path>
+                            <h4>Inference Latency</h4>
+                            <div class="value-wrap">
+                                <span class="value" id="r-latency-val">0</span>
+                                <span class="unit">ms</span>
+                            </div>
+                        </div>
+                        <div class="glass-panel metric-card" data-tilt>
+                            <svg class="metric-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" style="stroke: #ff4757;">
+                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                             </svg>
+                            <h4>Severity & Impact</h4>
+                            <div class="value-wrap">
+                                <span class="value" id="r-severity-val" style="color: #ff4757;">0</span>
+                                <span class="unit">%</span>
+                            </div>
                         </div>
-                        <div>
-                            <h4>Recommended Protocol</h4>
-                            <p id="r-treatment">Awaiting inference completion.</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 2: SMART FERTILIZER & NPK CALCULATOR   -->
+        <!-- ========================================== -->
+        <div class="tab-pane hidden" id="pane-fertilizer">
+            <div class="tool-panel glass-panel">
+                <div class="tool-header">
+                    <span class="section-kicker">Agronomy Tool #1</span>
+                    <h2>🧪 Smart Fertilizer & NPK Dosage Calculator</h2>
+                    <p>Calculate exact commercial bags of Urea, DAP, and MOP required for your farm based on certified university recommendations and crop stage.</p>
+                </div>
+                
+                <div class="tool-grid">
+                    <div class="tool-form-card glass-panel">
+                        <h3>Input Farm Parameters</h3>
+                        <div class="form-group">
+                            <label for="fert-crop">Target Crop:</label>
+                            <select id="fert-crop" class="custom-select">
+                                <option value="wheat">Wheat (Gehu)</option>
+                                <option value="rice">Rice / Paddy (Dhan)</option>
+                                <option value="tomato" selected>Tomato (Tamatar)</option>
+                                <option value="potato">Potato (Aalu)</option>
+                                <option value="corn">Corn / Maize (Makka)</option>
+                                <option value="cotton">Cotton (Kapas)</option>
+                                <option value="sugarcane">Sugarcane (Ganna)</option>
+                                <option value="onion">Onion (Pyaz)</option>
+                                <option value="mustard">Mustard (Sarson)</option>
+                                <option value="soybean">Soybean</option>
+                                <option value="apple">Apple (Seb)</option>
+                            </select>
                         </div>
+
+                        <div class="form-group-row">
+                            <div class="form-group">
+                                <label for="fert-area">Farm Area Size:</label>
+                                <input type="number" id="fert-area" value="1.0" min="0.1" step="0.5" class="custom-input">
+                            </div>
+                            <div class="form-group">
+                                <label for="fert-unit">Unit:</label>
+                                <select id="fert-unit" class="custom-select">
+                                    <option value="Acre" selected>Acres</option>
+                                    <option value="Hectare">Hectares</option>
+                                    <option value="Bigha">Bigha</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button class="btn-primary full-width" id="fert-calc-btn">
+                            ⚡ Calculate Fertilizer Dosage
+                        </button>
+                    </div>
+
+                    <div class="tool-result-card glass-panel" id="fert-result-card">
+                        <h3>Recommended Fertilizer Formulation</h3>
+                        <p class="subtitle" id="fert-subtitle">For 1.0 Acre of Tomato (Tamatar):</p>
+                        
+                        <div class="fert-bags-grid">
+                            <div class="bag-card urea-card">
+                                <div class="bag-header">
+                                    <span class="bag-name">UREA (46% N)</span>
+                                    <span class="bag-tag">Nitrogen</span>
+                                </div>
+                                <div class="bag-amount">
+                                    <span class="bag-val" id="res-urea-bags">4.3</span>
+                                    <span class="bag-unit">Bags (45kg)</span>
+                                </div>
+                                <span class="bag-total-kg" id="res-urea-kg">Total: 195 kg</span>
+                            </div>
+
+                            <div class="bag-card dap-card">
+                                <div class="bag-header">
+                                    <span class="bag-name">DAP (18:46:0)</span>
+                                    <span class="bag-tag">Phosphorus</span>
+                                </div>
+                                <div class="bag-amount">
+                                    <span class="bag-val" id="res-dap-bags">3.5</span>
+                                    <span class="bag-unit">Bags (50kg)</span>
+                                </div>
+                                <span class="bag-total-kg" id="res-dap-kg">Total: 176 kg</span>
+                            </div>
+
+                            <div class="bag-card mop-card">
+                                <div class="bag-header">
+                                    <span class="bag-name">MOP (60% K₂O)</span>
+                                    <span class="bag-tag">Potash</span>
+                                </div>
+                                <div class="bag-amount">
+                                    <span class="bag-val" id="res-mop-bags">3.2</span>
+                                    <span class="bag-unit">Bags (50kg)</span>
+                                </div>
+                                <span class="bag-total-kg" id="res-mop-kg">Total: 160 kg</span>
+                            </div>
+                        </div>
+
+                        <div class="fert-extras-grid">
+                            <div class="extra-item">
+                                <strong>Zinc Sulphate (21%):</strong>
+                                <span id="res-zinc-kg">8.0 kg</span>
+                            </div>
+                            <div class="extra-item">
+                                <strong>Farmyard Compost:</strong>
+                                <span id="res-compost-ton">8.0 Metric Tons</span>
+                            </div>
+                        </div>
+
+                        <div class="split-schedule-box">
+                            <h4>📅 Timetable & Split Application Protocol</h4>
+                            <div id="fert-schedule-content" class="schedule-list">
+                                <!-- Split Steps -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 3: MANDI BHAV & MARKET PRICE TRACKER   -->
+        <!-- ========================================== -->
+        <div class="tab-pane hidden" id="pane-mandi">
+            <div class="tool-panel glass-panel">
+                <div class="tool-header">
+                    <span class="section-kicker">Agronomy Tool #2</span>
+                    <h2>🌾 Mandi Market Bhav & Price Trends</h2>
+                    <p>Live commodity prices across major agricultural trading hubs with 24-hour trends and farmer selling recommendations.</p>
+                </div>
+
+                <div class="mandi-toolbar">
+                    <input type="text" id="mandi-search-input" placeholder="Search crop or mandi (e.g. Gehu, Tamatar, Agra, Lasalgaon)..." class="custom-input search-input">
+                    <div class="mandi-chips">
+                        <button class="mandi-filter-chip active" data-filter="all">All Crops</button>
+                        <button class="mandi-filter-chip" data-filter="wheat">Wheat</button>
+                        <button class="mandi-filter-chip" data-filter="paddy">Paddy / Rice</button>
+                        <button class="mandi-filter-chip" data-filter="tomato">Tomato</button>
+                        <button class="mandi-filter-chip" data-filter="mustard">Mustard</button>
+                        <button class="mandi-filter-chip" data-filter="cotton">Cotton</button>
                     </div>
                 </div>
 
-                <div class="results-heading" id="analytics">
-                    <span class="section-kicker">02 / Analytics</span>
-                    <h3>Prediction metrics</h3>
+                <div class="mandi-cards-grid" id="mandi-container">
+                    <!-- Dynamic Mandi Price Cards -->
                 </div>
-                <div class="metrics-row">
-                    <div class="glass-panel metric-card" data-tilt>
-                        <svg class="metric-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2">
-                            <path d="M2 12h4l3-9 5 18 3-9h5"></path>
-                        </svg>
-                        <h4>Model Confidence</h4>
-                        <div class="value-wrap">
-                            <span class="value" id="r-confidence-val">0</span>
-                            <span class="unit">%</span>
-                        </div>
-                    </div>
-                    <div class="glass-panel metric-card" data-tilt>
-                        <svg class="metric-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12 6 12 12 16 14"></polyline>
-                        </svg>
-                        <h4>Edge Latency</h4>
-                        <div class="value-wrap">
-                            <span class="value" id="r-latency-val">0</span>
-                            <span class="unit">ms</span>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 4: CROP PEST & WEED DIRECTORY          -->
+        <!-- ========================================== -->
+        <div class="tab-pane hidden" id="pane-pests">
+            <div class="tool-panel glass-panel">
+                <div class="tool-header">
+                    <span class="section-kicker">Agronomy Tool #3</span>
+                    <h2>🐛 Crop Pest & Destructive Weed Directory</h2>
+                    <p>Field identification guide for devastating insect pests, mites, and noxious weeds with certified chemical insecticides and bio-control remedies.</p>
+                </div>
+
+                <div class="pests-cards-grid" id="pests-container">
+                    <!-- Dynamic Pest & Weed Cards -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 5: ORGANIC BIO-LAB (DESI KHETI)        -->
+        <!-- ========================================== -->
+        <div class="tab-pane hidden" id="pane-organic">
+            <div class="tool-panel glass-panel">
+                <div class="tool-header">
+                    <span class="section-kicker">Agronomy Tool #4</span>
+                    <h2>🌱 Organic Bio-Lab (Desi Kheti Formulations)</h2>
+                    <p>Step-by-step master recipes for Zero-Budget Natural Farming: Jeevamrut, Neemastra, Agniastra, and natural bio-fungicides.</p>
+                </div>
+
+                <div class="recipes-container" id="recipes-container">
+                    <!-- Dynamic Organic Recipes -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 6: CROP CALENDAR & WEATHER GUIDE       -->
+        <!-- ========================================== -->
+        <div class="tab-pane hidden" id="pane-calendar">
+            <div class="tool-panel glass-panel">
+                <div class="tool-header">
+                    <span class="section-kicker">Agronomy Tool #5</span>
+                    <h2>🌦️ Seasonal Crop Calendar & Sowing Planner</h2>
+                    <p>Comprehensive agricultural sowing windows, temperature thresholds, and critical watering stages across Indian crop seasons.</p>
+                </div>
+
+                <div class="calendar-seasons-grid">
+                    <!-- KHARIF -->
+                    <div class="season-card glass-panel">
+                        <div class="season-badge kharif">Kharif (Monsoon Season)</div>
+                        <h3>June - November</h3>
+                        <p class="season-desc">Crops sown at the onset of southwest monsoon. Requires high moisture and warm temperatures.</p>
+                        <div class="crop-timeline-list">
+                            <div class="timeline-crop-item">
+                                <strong>Paddy / Rice:</strong> Sowing: June-July · Harvest: Oct-Nov · Critical: Panicle initiation
+                            </div>
+                            <div class="timeline-crop-item">
+                                <strong>Corn / Maize:</strong> Sowing: June-July · Harvest: Sept-Oct · Critical: Tasseling & silking
+                            </div>
+                            <div class="timeline-crop-item">
+                                <strong>Cotton:</strong> Sowing: May-June · Harvest: Nov-Jan · Critical: Flowering & boll formation
+                            </div>
+                            <div class="timeline-crop-item">
+                                <strong>Soybean:</strong> Sowing: Mid-June · Harvest: Sept-Oct · Critical: Pod development
+                            </div>
                         </div>
                     </div>
 
-                    <div class="glass-panel metric-card" data-tilt>
-                        <svg class="metric-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" style="stroke: #ff4757;">
-                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                        </svg>
-                        <h4>Severity estimate</h4>
-                        <div class="value-wrap">
-                            <span class="value" id="r-severity-val" style="color: #ff4757;">0</span>
-                            <span class="unit">%</span>
+                    <!-- RABI -->
+                    <div class="season-card glass-panel">
+                        <div class="season-badge rabi">Rabi (Winter Season)</div>
+                        <h3>October - April</h3>
+                        <p class="season-desc">Crops sown in autumn and harvested in spring. Thrives in cool weather and bright sunny days.</p>
+                        <div class="crop-timeline-list">
+                            <div class="timeline-crop-item">
+                                <strong>Wheat (Gehu):</strong> Sowing: Nov 1-25 · Harvest: March-April · Critical: CRI (21 DAS) & booting
+                            </div>
+                            <div class="timeline-crop-item">
+                                <strong>Mustard (Sarson):</strong> Sowing: Oct 1-20 · Harvest: Feb-March · Critical: Flowering & pod filling
+                            </div>
+                            <div class="timeline-crop-item">
+                                <strong>Potato:</strong> Planting: Oct 15-Nov 10 · Harvest: Jan-Feb · Critical: Tuber initiation
+                            </div>
+                            <div class="timeline-crop-item">
+                                <strong>Gram / Chickpea:</strong> Sowing: Oct-Nov · Harvest: March · Critical: Pre-flowering & pod set
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ZAID -->
+                    <div class="season-card glass-panel">
+                        <div class="season-badge zaid">Zaid (Summer Season)</div>
+                        <h3>March - June</h3>
+                        <p class="season-desc">Short season crops grown between Rabi harvest and Kharif monsoon with assured irrigation.</p>
+                        <div class="crop-timeline-list">
+                            <div class="timeline-crop-item">
+                                <strong>Watermelon / Muskmelon:</strong> Sowing: Feb-March · Harvest: May-June · Needs dry hot climate
+                            </div>
+                            <div class="timeline-crop-item">
+                                <strong>Cucumber & Squash:</strong> Sowing: Feb-March · Harvest: April-May · Frequent light irrigation
+                            </div>
+                            <div class="timeline-crop-item">
+                                <strong>Moong / Urad Dal:</strong> Sowing: March · Harvest: May · Enrich soil with root nitrogen
+                            </div>
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 7: SOIL HEALTH & pH ADVISOR            -->
+        <!-- ========================================== -->
+        <div class="tab-pane hidden" id="pane-soil">
+            <div class="tool-panel glass-panel">
+                <div class="tool-header">
+                    <span class="section-kicker">Agronomy Tool #6</span>
+                    <h2>🩺 Soil Health & pH Amendment Advisor</h2>
+                    <p>Analyze your soil pH and physical texture to receive exact corrective agricultural recommendations (Lime, Dolomite, Gypsum, Green Manuring).</p>
+                </div>
+
+                <div class="tool-grid">
+                    <div class="tool-form-card glass-panel">
+                        <h3>Soil Test Inputs</h3>
+                        <div class="form-group">
+                            <label for="soil-ph-slider">
+                                <span>Soil pH Level:</span>
+                                <strong id="soil-ph-val" style="font-size: 1.3rem; color: var(--brand-primary);">6.8</strong>
+                            </label>
+                            <input type="range" id="soil-ph-slider" min="3.5" max="10.5" step="0.1" value="6.8">
+                            <div class="ph-scale-legend">
+                                <span style="color: #ef4444;">Acidic (&lt;6.0)</span>
+                                <span style="color: #10b981;">Neutral (6.5-7.5)</span>
+                                <span style="color: #3b82f6;">Alkaline (&gt;8.0)</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="soil-texture-select">Soil Texture:</label>
+                            <select id="soil-texture-select" class="custom-select">
+                                <option value="Loamy" selected>Loamy (Balanced Sand-Silt-Clay)</option>
+                                <option value="Clayey">Clayey (Heavy, high water-holding)</option>
+                                <option value="Sandy">Sandy (Light, rapid drainage)</option>
+                            </select>
+                        </div>
+
+                        <button class="btn-primary full-width" id="soil-eval-btn">
+                            🩺 Evaluate Soil & Prescribe Amendments
+                        </button>
+                    </div>
+
+                    <div class="tool-result-card glass-panel" id="soil-result-card">
+                        <h3>Soil Health Prescription</h3>
+                        <div class="soil-badge-row">
+                            <span class="status-badge" id="res-soil-badge">Optimal Neutral</span>
+                            <span class="meta-label" id="res-soil-texture">Texture: Loamy</span>
+                        </div>
+                        <div class="soil-box diagnosis-box">
+                            <h4>🔬 Scientific Assessment</h4>
+                            <p id="res-soil-diag">Ideal root zone pH! Maximum availability of all primary (N, P, K), secondary, and micronutrients.</p>
+                        </div>
+                        <div class="soil-box amendment-box">
+                            <h4>🧪 Prescribed Corrective Amendment</h4>
+                            <p id="res-soil-amend">No chemical amendments required! Maintain soil organic carbon by applying 2-3 tons of vermicompost and cover cropping.</p>
+                        </div>
+                        <div class="soil-box guidance-box">
+                            <h4>🌱 Soil Texture & Irrigation Management</h4>
+                            <p id="res-soil-guide">Perfect balance of sand, silt, and clay. High organic matter retention and excellent capillary moisture holding.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 8: SCAN HISTORY & RECORDS              -->
+        <!-- ========================================== -->
+        <div class="tab-pane hidden" id="pane-history">
+            <div class="tool-panel glass-panel">
+                <div class="tool-header">
+                    <span class="section-kicker">Diagnostic Archive</span>
+                    <h2>📜 Scan History & Past Prescriptions</h2>
+                    <p>All your leaf diagnostic scans are safely stored locally in your browser so you can reference treatment protocols anytime.</p>
+                </div>
+                
+                <div class="history-actions-bar">
+                    <span id="history-count">0 Diagnoses Saved</span>
+                    <button class="btn-ghost danger" id="clear-history-btn">🗑️ Clear History</button>
+                </div>
+
+                <div class="history-grid" id="history-container">
+                    <div class="empty-state">
+                        <span class="empty-icon">🍃</span>
+                        <p>No previous scans found. Run your first leaf diagnostic to save records here!</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
-
-    <!-- AI Agent Interface -->
+    <!-- ========================================== -->
+    <!-- AI AGENT CONVERSATIONAL INTERFACE          -->
+    <!-- ========================================== -->
     <div id="ai-agent-container" class="hidden glass-panel" data-tilt>
         <div class="agent-header">
-            <h4>AgriNet Agent</h4>
-            <button id="agent-close-btn">&times;</button>
+            <div class="agent-title-row">
+                <span class="pulse-dot green"></span>
+                <h4>AgriNet AI Assistant</h4>
+            </div>
+            <button id="agent-close-btn" title="Close">&times;</button>
         </div>
+
+        <!-- MESSAGES WINDOW -->
         <div class="agent-messages" id="agent-messages">
-            <div class="message ai">Hello! I am AgriNet AI. You can say "open camera", "upload image", "analyze", or
-                "close".</div>
+            <div class="message ai">
+                Hello! 🌾 I am AgriNet AI, your 24/7 intelligent farming assistant. You can speak with me naturally, ask about any feature on this site, or say commands like "open camera", "check fertilizer", "mandi bhav", or "analyze leaf"!
+            </div>
         </div>
+
+        <!-- QUICK PROMPT SUGGESTION CHIPS -->
+        <div class="agent-chips-wrap">
+            <button class="agent-chip" data-query="Site ke feature batao">✨ Site Features</button>
+            <button class="agent-chip" data-query="Early blight medicine">💊 Early Blight Medicine</button>
+            <button class="agent-chip" data-query="Fertilizer for 2 acre wheat">🧪 Wheat Fertilizer</button>
+            <button class="agent-chip" data-query="Today's mandi bhav">🌾 Mandi Bhav</button>
+            <button class="agent-chip" data-query="Jeevamrut recipe">🌱 Jeevamrut Recipe</button>
+            <button class="agent-chip" data-query="open camera">📷 Open Camera</button>
+        </div>
+
+        <!-- CAMERA FEED INTEGRATION -->
         <video id="agent-camera" class="hidden" autoplay playsinline></video>
-        <button id="agent-capture-btn" class="hidden btn-primary">Capture</button>
+        <button id="agent-capture-btn" class="hidden btn-primary">📸 Snap Photo & Load</button>
         <canvas id="agent-canvas" class="hidden"></canvas>
+
+        <!-- INPUT BAR -->
         <div class="agent-input-area">
-            <input type="text" id="agent-input" placeholder="Ask or command (open, search, etc)...">
-            <button id="agent-voice-btn" class="btn-ghost" title="Hold to speak">
+            <input type="text" id="agent-input" placeholder="Ask in English or Hindi (e.g. Tamatar me rog, urea dose)...">
+            <button id="agent-voice-btn" class="btn-ghost" title="Hold or click to speak">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
                     <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
@@ -211,16 +753,19 @@
             <button id="agent-send-btn" class="btn-primary">Send</button>
         </div>
     </div>
-    <button id="agent-toggle-btn" class="glow-on-hover">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
+    <!-- FLOATING TOGGLE BUTTON -->
+    <button id="agent-toggle-btn" class="glow-on-hover" title="Chat with AgriNet AI">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path
                 d="M12 2a2 2 0 0 1 2 2v1h5a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-4v2h2v2H7v-2h2v-2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5V4a2 2 0 0 1 2-2z">
             </path>
         </svg>
+        <span class="floating-badge">AI Assistant</span>
     </button>
 
+    <!-- SCRIPTS -->
     <script src="/static/script.js"></script>
 </body>
 
-</html><!-- Optimized responsive scaling for dashboards -->
-<!-- Add accessibility labels -->
+</html>
