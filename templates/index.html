@@ -32,6 +32,7 @@
         </div>
         <nav>
             <a href="#feature-nav" class="nav-link active" data-target="detector">🌿 Leaf Doctor</a>
+            <a href="#feature-nav" class="nav-link" data-target="methodology">🔬 Methodology</a>
             <a href="#feature-nav" class="nav-link" data-target="fertilizer">🧪 Fertilizer Calc</a>
             <a href="#feature-nav" class="nav-link" data-target="mandi">🌾 Mandi Bhav</a>
             <a href="#feature-nav" class="nav-link" data-target="pests">🐛 Pest Guide</a>
@@ -65,7 +66,7 @@
                     <span class="stat-label">Dosage & Medicine Data</span>
                 </div>
                 <div class="hero-stat-item">
-                    <span class="stat-number">8-in-1</span>
+                    <span class="stat-number">9-in-1</span>
                     <span class="stat-label">Integrated Tools</span>
                 </div>
             </div>
@@ -83,6 +84,13 @@
                     <div class="f-text">
                         <strong>AI Leaf Doctor</strong>
                         <small>Disease Detection & Medicines</small>
+                    </div>
+                </button>
+                <button class="feature-btn" data-tab="methodology">
+                    <span class="f-icon">🔬</span>
+                    <div class="f-text">
+                        <strong>AI Methodology</strong>
+                        <small>How Detection Works</small>
                     </div>
                 </button>
                 <button class="feature-btn" data-tab="fertilizer">
@@ -241,21 +249,75 @@
                     </div>
                 </section>
 
-                <!-- RESULTS SECTION -->
+                <!-- RESULTS SECTION (EXACT CARD 4 LAYOUT + DEEP AGRONOMY REPORT) -->
                 <section class="results-section hidden" id="results-container">
-                    <!-- MAIN DIAGNOSIS CARD -->
-                    <div class="glass-panel result-card main-result" data-tilt>
-                        <div class="card-header-bar">
-                            <span class="header-tag">Official Plant Pathology Report</span>
-                            <span class="risk-badge" id="r-risk-badge">High Risk</span>
-                        </div>
-                        
-                        <h2 id="r-disease" class="disease-title">Analyzing...</h2>
-                        <div class="pathogen-bar">
-                            <span class="meta-label">Pathogen / Crop:</span>
-                            <span id="r-pathogen" class="meta-val">Awaiting Inference</span>
+                    <!-- SLEEK RESULT HERO CARD (MATCHING USER'S IMAGE CARD 4) -->
+                    <div class="result-hero-card glass-panel" data-tilt>
+                        <div class="result-hero-top">
+                            <div class="result-thumb-wrapper">
+                                <img id="r-card-thumb" src="" alt="Diagnosed Leaf Specimen">
+                                <span class="thumb-badge">Specimen</span>
+                            </div>
+                            <div class="result-hero-meta">
+                                <div class="result-title-row">
+                                    <h2 id="r-disease" class="disease-title">Analyzing...</h2>
+                                    <span class="risk-badge" id="r-risk-badge">High Risk</span>
+                                </div>
+                                <div class="pathogen-bar">
+                                    <span class="meta-label">Pathogen / Crop:</span>
+                                    <span id="r-pathogen" class="meta-val">Awaiting Inference</span>
+                                </div>
+                                
+                                <!-- CONFIDENCE BAR -->
+                                <div class="confidence-container">
+                                    <div class="confidence-labels">
+                                        <span>Confidence</span>
+                                        <strong id="r-confidence-text">0.00%</strong>
+                                    </div>
+                                    <div class="confidence-track">
+                                        <div class="confidence-fill" id="r-confidence-bar" style="width: 0%;"></div>
+                                    </div>
+                                </div>
+
+                                <!-- STAT CHIPS (SEVERITY + LATENCY) -->
+                                <div class="hero-stats-chips">
+                                    <div class="stat-chip severity-chip">
+                                        <span class="chip-icon">🔥</span>
+                                        <div class="chip-info">
+                                            <small>Severity</small>
+                                            <strong id="r-hero-severity">High</strong>
+                                        </div>
+                                    </div>
+                                    <div class="stat-chip latency-chip">
+                                        <span class="chip-icon">⏱️</span>
+                                        <div class="chip-info">
+                                            <small>Latency</small>
+                                            <strong id="r-hero-latency">291 ms</strong>
+                                        </div>
+                                    </div>
+                                    <div class="stat-chip recovery-chip">
+                                        <span class="chip-icon">🌱</span>
+                                        <div class="chip-info">
+                                            <small>Recovery</small>
+                                            <strong id="r-hero-recovery">7-14 Days</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
+                        <!-- TREATMENT BOX (MATCHING EXACT CARD 4 IN IMAGE) -->
+                        <div class="treatment-hero-box">
+                            <div class="t-icon">🌿</div>
+                            <div class="t-content">
+                                <h4>Treatment</h4>
+                                <p id="r-treatment-summary">Awaiting inference completion.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- EXPANDED DETAILED AGRONOMY PRESCRIPTION -->
+                    <div class="glass-panel result-details-panel">
                         <!-- BRIEF OVERVIEW -->
                         <div class="info-block brief-block">
                             <h4>📖 Disease Overview & Pathology</h4>
@@ -316,50 +378,238 @@
                             </button>
                         </div>
                     </div>
-
-                    <!-- ANALYTICS METRICS ROW -->
-                    <div class="results-heading">
-                        <span class="section-kicker">02 / Telemetry & Confidence</span>
-                        <h3>Model Analytics</h3>
-                    </div>
-                    <div class="metrics-row">
-                        <div class="glass-panel metric-card" data-tilt>
-                            <svg class="metric-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2">
-                                <path d="M2 12h4l3-9 5 18 3-9h5"></path>
-                            </svg>
-                            <h4>Model Confidence</h4>
-                            <div class="value-wrap">
-                                <span class="value" id="r-confidence-val">0</span>
-                                <span class="unit">%</span>
-                            </div>
-                        </div>
-                        <div class="glass-panel metric-card" data-tilt>
-                            <svg class="metric-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <polyline points="12 6 12 12 16 14"></polyline>
-                            </svg>
-                            <h4>Inference Latency</h4>
-                            <div class="value-wrap">
-                                <span class="value" id="r-latency-val">0</span>
-                                <span class="unit">ms</span>
-                            </div>
-                        </div>
-                        <div class="glass-panel metric-card" data-tilt>
-                            <svg class="metric-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" style="stroke: #ff4757;">
-                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                            </svg>
-                            <h4>Severity & Impact</h4>
-                            <div class="value-wrap">
-                                <span class="value" id="r-severity-val" style="color: #ff4757;">0</span>
-                                <span class="unit">%</span>
-                            </div>
-                        </div>
-                    </div>
                 </section>
             </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB: METHODOLOGY & ARCHITECTURE (AS IN IMAGE) -->
+        <!-- ========================================== -->
+        <div class="tab-pane hidden" id="pane-methodology">
+            <section class="methodology-full-panel glass-panel">
+                <div class="methodology-header">
+                    <div class="meth-badge-row">
+                        <span class="meth-badge">M E T H O D O L O G Y</span>
+                        <div class="meth-tag-right">
+                            <span>Healthy Plants</span>
+                            <small>Healthy Future 🍃</small>
+                        </div>
+                    </div>
+                    <h2>How Our Plant Disease Detection System Works</h2>
+                    <p class="meth-subtitle">From leaf image to actionable insights — powered by AI, designed for farmers.</p>
+                </div>
+
+                <!-- 4 STEP PIPELINE CARDS (EXACT MATCH TO IMAGE) -->
+                <div class="meth-pipeline-grid">
+                    <!-- STEP 1 -->
+                    <div class="meth-step-card glass-panel">
+                        <div class="step-card-header">
+                            <span class="step-num-badge">1</span>
+                            <h3>Image Input</h3>
+                        </div>
+                        <p class="step-desc">Upload a leaf image or capture using your device camera.</p>
+                        
+                        <div class="step-visual-box input-visual">
+                            <div class="visual-leaf-preview" id="meth-leaf-preview">
+                                <img src="https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=350&q=80" alt="Leaf Sample">
+                            </div>
+                            <div class="visual-btn-row">
+                                <button class="v-btn" id="meth-upload-btn">
+                                    <span>🖼️ Upload</span>
+                                </button>
+                                <button class="v-btn" id="meth-cam-btn">
+                                    <span>📷 Camera</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pipeline-arrow">➔</div>
+
+                    <!-- STEP 2 -->
+                    <div class="meth-step-card glass-panel">
+                        <div class="step-card-header">
+                            <span class="step-num-badge">2</span>
+                            <h3>Pre-processing</h3>
+                        </div>
+                        <p class="step-desc">Image is resized to 224×224 and normalized for better model performance.</p>
+
+                        <div class="step-visual-box preproc-visual">
+                            <div class="tensor-flow-row">
+                                <div class="tensor-item">
+                                    <div class="thumb-mini">
+                                        <img src="https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=150&q=80" alt="Original">
+                                    </div>
+                                    <small>Original Image</small>
+                                </div>
+                                <span class="arrow-small">➔</span>
+                                <div class="tensor-item">
+                                    <div class="tensor-3d-stack">
+                                        <div class="tensor-slice slice-1"></div>
+                                        <div class="tensor-slice slice-2"></div>
+                                        <div class="tensor-slice slice-3"></div>
+                                    </div>
+                                    <strong class="tensor-dim">224 × 224 × 3</strong>
+                                    <small>Normalized Tensor</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pipeline-arrow">➔</div>
+
+                    <!-- STEP 3 -->
+                    <div class="meth-step-card glass-panel">
+                        <div class="step-card-header">
+                            <span class="step-num-badge">3</span>
+                            <h3>Deep Learning Model</h3>
+                        </div>
+                        <p class="step-desc">A trained CNN (MobileNetV2 / ResNet50) classifies the disease using learned patterns from the PlantVillage dataset.</p>
+
+                        <div class="step-visual-box cnn-visual">
+                            <div class="cnn-arch-row">
+                                <!-- CNN 3D feature layer blocks -->
+                                <div class="cnn-layers-group">
+                                    <div class="cnn-block block-1"></div>
+                                    <div class="cnn-block block-2"></div>
+                                    <div class="cnn-block block-3"></div>
+                                    <div class="cnn-block block-4"></div>
+                                    <div class="cnn-block block-5"></div>
+                                </div>
+                                <span class="arrow-small">➔</span>
+                                <!-- Softmax probabilities list -->
+                                <div class="softmax-probs-box">
+                                    <div class="prob-row">
+                                        <span>Healthy</span>
+                                        <span class="prob-val">0.05</span>
+                                    </div>
+                                    <div class="prob-row highlight-green">
+                                        <span>Early Blight</span>
+                                        <span class="prob-val">0.93</span>
+                                    </div>
+                                    <div class="prob-row">
+                                        <span>Late Blight</span>
+                                        <span class="prob-val">0.01</span>
+                                    </div>
+                                    <div class="prob-dots">...</div>
+                                </div>
+                            </div>
+                            <div class="cnn-caption">MobileNetV2 / ResNet50 (Pre-trained + Fine-tuned)</div>
+                        </div>
+                    </div>
+
+                    <div class="pipeline-arrow">➔</div>
+
+                    <!-- STEP 4 -->
+                    <div class="meth-step-card glass-panel">
+                        <div class="step-card-header">
+                            <span class="step-num-badge">4</span>
+                            <h3>Result & Guidance</h3>
+                        </div>
+                        <p class="step-desc">Get disease name, confidence score, severity index and treatment recommendations.</p>
+
+                        <!-- EXACT MINI RESULT CARD AS IN IMAGE -->
+                        <div class="meth-result-card">
+                            <div class="m-card-top">
+                                <div class="m-thumb">
+                                    <img src="https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=150&q=80" alt="Result Specimen">
+                                </div>
+                                <div class="m-meta">
+                                    <div class="m-title">Potato - Early Blight</div>
+                                    <div class="m-conf-row">
+                                        <span>Confidence</span>
+                                        <strong>93.00%</strong>
+                                    </div>
+                                    <div class="m-conf-bar">
+                                        <div class="m-conf-fill" style="width: 93%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="m-metrics-row">
+                                <div class="m-stat">
+                                    <span>🔥 Severity</span>
+                                    <strong style="color: #ef4444;">High</strong>
+                                </div>
+                                <div class="m-stat">
+                                    <span>⏱️ Latency</span>
+                                    <strong>291 ms</strong>
+                                </div>
+                            </div>
+
+                            <div class="m-treatment-box">
+                                <strong>🌿 Treatment</strong>
+                                <p>Use copper-based fungicides. Remove infected leaves.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOTTOM SECTION: DATA FLOW & TECH STACK -->
+                <div class="meth-bottom-banner">
+                    <div class="dataflow-col">
+                        <h4>Data Flow & Technology Stack</h4>
+                        <div class="dataflow-steps">
+                            <div class="df-node">
+                                <span class="df-icon">🍃</span>
+                                <strong>Leaf Image</strong>
+                                <small>(User Input)</small>
+                            </div>
+                            <span class="df-arrow">➔</span>
+                            <div class="df-node">
+                                <span class="df-icon">⚙️</span>
+                                <strong>Flask Backend</strong>
+                                <small>(API Processing)</small>
+                            </div>
+                            <span class="df-arrow">➔</span>
+                            <div class="df-node">
+                                <span class="df-icon">🧠</span>
+                                <strong>CNN Model</strong>
+                                <small>(ONNX / TensorFlow)</small>
+                            </div>
+                            <span class="df-arrow">➔</span>
+                            <div class="df-node">
+                                <span class="df-icon">🗄️</span>
+                                <strong>PlantVillage Dataset</strong>
+                                <small>(38 Classes · 50K+ Images)</small>
+                            </div>
+                            <span class="df-arrow">➔</span>
+                            <div class="df-node">
+                                <span class="df-icon">📊</span>
+                                <strong>Prediction + Insights</strong>
+                                <small>(Web Interface)</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="techstack-col">
+                        <h4>Powered By</h4>
+                        <div class="tech-logos-row">
+                            <div class="tech-pill">
+                                <span>🐍 Python</span>
+                            </div>
+                            <div class="tech-pill">
+                                <span>🌶️ Flask</span>
+                            </div>
+                            <div class="tech-pill">
+                                <span>⚡ ONNX / TF</span>
+                            </div>
+                            <div class="tech-pill">
+                                <span>✨ Gemini AI</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FOOTER TAG -->
+                <div class="meth-footer-tag">
+                    <span>🌱 AI for Better Crop Health</span>
+                    <span>|</span>
+                    <span>Smarter Decisions</span>
+                    <span>|</span>
+                    <span>Sustainable Agriculture 🍃</span>
+                </div>
+            </section>
         </div>
 
         <!-- ========================================== -->

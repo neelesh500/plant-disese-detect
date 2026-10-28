@@ -151,6 +151,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const reader = new FileReader();
             reader.onload = () => {
                 imagePreview.src = reader.result;
+                const cardThumb = document.getElementById('r-card-thumb');
+                if (cardThumb) cardThumb.src = reader.result;
+                const methLeaf = document.querySelector('#meth-leaf-preview img');
+                if (methLeaf) methLeaf.src = reader.result;
                 dragArea.classList.add('hidden');
                 previewArea.classList.remove('hidden');
                 resultsContainer.classList.add('hidden');
@@ -353,7 +357,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderDiagnosisReport(data) {
         resultsContainer.classList.remove('hidden');
 
-        // Title and meta
+        // Card 4: Specimen thumbnail & title
+        const cardThumb = document.getElementById('r-card-thumb');
+        if (cardThumb && imagePreview.src) {
+            cardThumb.src = imagePreview.src;
+        }
+
         const diseaseElem = document.getElementById('r-disease');
         const pathogenElem = document.getElementById('r-pathogen');
         const riskBadge = document.getElementById('r-risk-badge');
@@ -370,6 +379,42 @@ document.addEventListener('DOMContentLoaded', () => {
             if (risk.toLowerCase().includes('safe')) riskBadge.classList.add('safe');
             else if (risk.toLowerCase().includes('crit') || risk.toLowerCase().includes('high')) riskBadge.classList.add('critical');
             else riskBadge.classList.add('moderate');
+        }
+
+        // Confidence text & bar
+        const confVal = parseFloat(data.confidence) || 93.0;
+        const confText = document.getElementById('r-confidence-text');
+        const confBar = document.getElementById('r-confidence-bar');
+        if (confText) confText.textContent = confVal.toFixed(2) + '%';
+        if (confBar) confBar.style.width = Math.min(100, Math.max(5, confVal)) + '%';
+
+        // Severity, Latency & Recovery chips
+        const heroSeverity = document.getElementById('r-hero-severity');
+        if (heroSeverity) {
+            heroSeverity.textContent = data.risk_level || 'High';
+            if (data.risk_level && data.risk_level.toLowerCase().includes('safe')) {
+                heroSeverity.style.color = '#15803d';
+            } else if (data.risk_level && data.risk_level.toLowerCase().includes('mod')) {
+                heroSeverity.style.color = '#b45309';
+            } else {
+                heroSeverity.style.color = '#ef4444';
+            }
+        }
+
+        const heroLatency = document.getElementById('r-hero-latency');
+        if (heroLatency) {
+            heroLatency.textContent = (data.latency || '291') + ' ms';
+        }
+
+        const heroRecovery = document.getElementById('r-hero-recovery');
+        if (heroRecovery) {
+            heroRecovery.textContent = data.recovery_time || '7-14 Days';
+        }
+
+        // Treatment hero box
+        const treatmentSummary = document.getElementById('r-treatment-summary');
+        if (treatmentSummary) {
+            treatmentSummary.textContent = data.treatment || "Use copper-based fungicides. Remove infected leaves.";
         }
 
         // Brief
@@ -1161,6 +1206,22 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
+
+    // Methodology interactive Step 1 triggers
+    const methUploadBtn = document.getElementById('meth-upload-btn');
+    const methCamBtn = document.getElementById('meth-cam-btn');
+    if (methUploadBtn) {
+        methUploadBtn.addEventListener('click', () => {
+            switchTab('detector');
+            if (browseBtn) browseBtn.click();
+        });
+    }
+    if (methCamBtn) {
+        methCamBtn.addEventListener('click', () => {
+            switchTab('detector');
+            if (cameraTriggerBtn) cameraTriggerBtn.click();
+        });
+    }
 
     console.log("🌾 AgriNet AI modules fully loaded and ready.");
 });

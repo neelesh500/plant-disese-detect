@@ -2124,3 +2124,697 @@ button:disabled { opacity: .65; cursor: wait; }
     .hero { flex-direction: column; align-items: flex-start; }
     .hero-stats { width: 100%; justify-content: space-around; }
 }
+
+
+/* ==========================================================================
+   EXACT METHODOLOGY PIPELINE & CARD 4 RESULT INTERFACE (FROM USER SPEC)
+   ========================================================================== */
+
+/* RESULT HERO CARD (EXACT CARD 4 DESIGN) */
+.result-hero-card {
+    background: #ffffff;
+    border: 1.5px solid #d3e4cf;
+    border-radius: 18px;
+    padding: 1.75rem;
+    box-shadow: 0 14px 38px rgba(35, 60, 40, 0.09);
+    margin-bottom: 1.5rem;
+}
+
+.result-hero-top {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+
+.result-thumb-wrapper {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    flex-shrink: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 2px solid #b7d6b0;
+    background: #eef5eb;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.result-thumb-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.thumb-badge {
+    position: absolute;
+    bottom: 6px;
+    left: 6px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    background: rgba(20, 83, 45, 0.85);
+    color: #ffffff;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    backdrop-filter: blur(4px);
+}
+
+.result-hero-meta {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.result-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+}
+
+.result-hero-meta .disease-title {
+    font-size: 1.55rem;
+    font-weight: 800;
+    color: #1e3a24;
+    margin: 0;
+}
+
+/* CONFIDENCE BAR */
+.confidence-container {
+    margin: 0.65rem 0 0.85rem;
+}
+
+.confidence-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.3rem;
+}
+
+.confidence-labels strong {
+    color: #15803d;
+    font-size: 0.94rem;
+}
+
+.confidence-track {
+    width: 100%;
+    height: 8px;
+    background: #e5ece2;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.confidence-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #059669);
+    border-radius: 999px;
+    transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* HERO STAT CHIPS (SEVERITY + LATENCY) */
+.hero-stats-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+}
+
+.stat-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.85rem;
+    background: #f4f8f2;
+    border: 1px solid #d8e5d4;
+    border-radius: 10px;
+}
+
+.chip-icon {
+    font-size: 1.15rem;
+}
+
+.chip-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.chip-info small {
+    font-size: 0.68rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.chip-info strong {
+    font-size: 0.88rem;
+    color: var(--text-primary);
+}
+
+/* TREATMENT HERO BOX (Exact like Card 4) */
+.treatment-hero-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    margin-top: 1.25rem;
+    padding: 1rem 1.25rem;
+    background: #f0fdf4;
+    border: 1.5px solid #bbf7d0;
+    border-radius: 12px;
+}
+
+.treatment-hero-box .t-icon {
+    font-size: 1.6rem;
+    line-height: 1;
+}
+
+.treatment-hero-box h4 {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #14532d;
+    margin-bottom: 0.25rem;
+}
+
+.treatment-hero-box p {
+    font-size: 0.88rem;
+    color: #166534;
+    line-height: 1.45;
+    margin: 0;
+}
+
+.result-details-panel {
+    background: #ffffff;
+    border: 1px solid #dce8d8;
+    border-radius: 18px;
+    padding: 1.75rem;
+}
+
+/* ==========================================================================
+   METHODOLOGY FULL PANEL & 4-STEP PIPELINE (MATCHING USER IMAGE)
+   ========================================================================== */
+.methodology-full-panel {
+    background: linear-gradient(180deg, #f7faf5 0%, #edf5e8 100%);
+    border: 1.5px solid #d4e3cf;
+    border-radius: 24px;
+    padding: 2.75rem 2.25rem;
+    box-shadow: 0 18px 45px rgba(35, 60, 40, 0.08);
+}
+
+.methodology-header {
+    text-align: center;
+    max-width: 820px;
+    margin: 0 auto 2.5rem;
+}
+
+.meth-badge-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.meth-badge {
+    padding: 0.45rem 1.4rem;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.25em;
+    color: #276749;
+    background: #dcfce7;
+    border: 1px solid #86efac;
+    border-radius: 999px;
+    text-transform: uppercase;
+}
+
+.meth-tag-right {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #2d6a4f;
+    font-style: italic;
+}
+
+.methodology-header h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    font-weight: 800;
+    color: #133a21;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+}
+
+.meth-subtitle {
+    font-size: 1.02rem;
+    color: var(--text-secondary);
+}
+
+/* 4-STEP PIPELINE GRID */
+.meth-pipeline-grid {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+}
+
+.meth-step-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 1.5px solid #d5e5d1;
+    border-radius: 18px;
+    padding: 1.35rem 1.15rem;
+    box-shadow: 0 8px 24px rgba(35, 60, 40, 0.05);
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.meth-step-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--brand-primary);
+}
+
+.pipeline-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    font-weight: 900;
+    color: #10b981;
+    padding: 0 0.15rem;
+}
+
+.step-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.45rem;
+}
+
+.step-num-badge {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #1e3a24;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.82rem;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.step-card-header h3 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #1e3a24;
+}
+
+.step-desc {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    line-height: 1.35;
+    margin-bottom: 1rem;
+    min-height: 38px;
+}
+
+.step-visual-box {
+    margin-top: auto;
+    border-radius: 12px;
+    background: #f7faf5;
+    border: 1px solid #e2ece0;
+    padding: 0.85rem;
+    text-align: center;
+}
+
+/* STEP 1 VISUAL */
+.visual-leaf-preview {
+    width: 100%;
+    height: 110px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 0.65rem;
+    background: #e2ede0;
+}
+
+.visual-leaf-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.visual-btn-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.v-btn {
+    flex: 1;
+    padding: 0.45rem 0.65rem;
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--brand-secondary);
+    background: #ffffff;
+    border: 1px solid #cbdac7;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.v-btn:hover {
+    background: var(--brand-primary);
+    color: #ffffff;
+    border-color: var(--brand-primary);
+}
+
+/* STEP 2 VISUAL: TENSOR FLOW */
+.tensor-flow-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+}
+
+.tensor-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.thumb-mini {
+    width: 52px;
+    height: 52px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 0.35rem;
+    border: 1px solid #c8d8c4;
+}
+
+.thumb-mini img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.arrow-small {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #10b981;
+}
+
+.tensor-3d-stack {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 0.35rem;
+}
+
+.tensor-slice {
+    position: absolute;
+    width: 42px;
+    height: 22px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    transform: rotate(-25deg) skew(25deg);
+}
+
+.slice-1 { background: #3b82f6; top: 0px; left: 3px; z-index: 3; opacity: 0.85; }
+.slice-2 { background: #10b981; top: 10px; left: 3px; z-index: 2; opacity: 0.85; }
+.slice-3 { background: #f59e0b; top: 20px; left: 3px; z-index: 1; opacity: 0.85; }
+
+.tensor-dim {
+    font-size: 0.75rem;
+    color: #1e3a24;
+}
+
+.tensor-item small {
+    font-size: 0.68rem;
+    color: var(--text-secondary);
+}
+
+/* STEP 3 VISUAL: CNN CONVNET BLOCKS & PROBABILITIES */
+.cnn-arch-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem;
+    padding: 0.4rem 0;
+}
+
+.cnn-layers-group {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.cnn-block {
+    background: linear-gradient(180deg, #34d399, #059669);
+    border: 1px solid #047857;
+    border-radius: 3px;
+    box-shadow: 1px 2px 5px rgba(0,0,0,0.15);
+}
+
+.block-1 { width: 10px; height: 50px; }
+.block-2 { width: 12px; height: 42px; }
+.block-3 { width: 14px; height: 35px; }
+.block-4 { width: 16px; height: 28px; }
+.block-5 { width: 18px; height: 20px; }
+
+.softmax-probs-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    text-align: left;
+    font-size: 0.68rem;
+    background: #ffffff;
+    padding: 0.45rem 0.6rem;
+    border-radius: 8px;
+    border: 1px solid #d4dfd0;
+}
+
+.prob-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.prob-row.highlight-green {
+    background: #dcfce7;
+    color: #15803d;
+    font-weight: 800;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+}
+
+.prob-dots {
+    font-size: 0.7rem;
+    line-height: 0.5;
+    color: #94a3b8;
+    text-align: center;
+}
+
+.cnn-caption {
+    font-size: 0.68rem;
+    color: var(--text-secondary);
+    margin-top: 0.55rem;
+}
+
+/* STEP 4 VISUAL: MINI RESULT CARD */
+.meth-result-card {
+    background: #ffffff;
+    border: 1px solid #cde0ca;
+    border-radius: 12px;
+    padding: 0.75rem;
+    text-align: left;
+}
+
+.m-card-top {
+    display: flex;
+    gap: 0.65rem;
+    align-items: center;
+    margin-bottom: 0.65rem;
+}
+
+.m-thumb {
+    width: 44px;
+    height: 44px;
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 1px solid #b7d6b0;
+}
+
+.m-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.m-meta {
+    flex: 1;
+}
+
+.m-title {
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: #1e3a24;
+    line-height: 1.2;
+}
+
+.m-conf-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.68rem;
+    color: var(--text-secondary);
+    margin: 0.2rem 0 0.15rem;
+}
+
+.m-conf-row strong {
+    color: #15803d;
+}
+
+.m-conf-bar {
+    width: 100%;
+    height: 4px;
+    background: #e2ede0;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.m-conf-fill {
+    height: 100%;
+    background: #10b981;
+}
+
+.m-metrics-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.35rem 0.5rem;
+    background: #f7faf5;
+    border-radius: 6px;
+    font-size: 0.68rem;
+    margin-bottom: 0.5rem;
+}
+
+.m-treatment-box {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 6px;
+    padding: 0.45rem 0.6rem;
+    font-size: 0.68rem;
+    line-height: 1.35;
+}
+
+.m-treatment-box strong {
+    color: #15803d;
+    display: block;
+    margin-bottom: 0.1rem;
+}
+
+.m-treatment-box p {
+    color: #166534;
+    margin: 0;
+}
+
+/* BOTTOM SECTION: DATA FLOW & TECH STACK */
+.meth-bottom-banner {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr);
+    gap: 1.75rem;
+    background: #ffffff;
+    border: 1.5px solid #d5e5d1;
+    border-radius: 18px;
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1.75rem;
+}
+
+.dataflow-col h4, .techstack-col h4 {
+    font-size: 0.96rem;
+    font-weight: 800;
+    color: #1e3a24;
+    margin-bottom: 1rem;
+}
+
+.dataflow-steps {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.df-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.df-icon {
+    font-size: 1.4rem;
+    margin-bottom: 0.2rem;
+}
+
+.df-node strong {
+    font-size: 0.78rem;
+    color: var(--text-primary);
+}
+
+.df-node small {
+    font-size: 0.68rem;
+    color: var(--text-secondary);
+}
+
+.df-arrow {
+    font-size: 0.95rem;
+    font-weight: 900;
+    color: #10b981;
+}
+
+.tech-logos-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+}
+
+.tech-pill {
+    padding: 0.55rem 0.95rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    background: #f7faf5;
+    border: 1.5px solid #d4dfd0;
+    border-radius: 999px;
+    color: #1e3a24;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+/* FOOTER TAG */
+.meth-footer-tag {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem;
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: #276749;
+    letter-spacing: 0.04em;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 1024px) {
+    .meth-pipeline-grid {
+        flex-direction: column;
+    }
+    .pipeline-arrow {
+        transform: rotate(90deg);
+        padding: 0.6rem 0;
+    }
+    .meth-bottom-banner {
+        grid-template-columns: 1fr;
+    }
+}
