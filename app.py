@@ -4,7 +4,7 @@ import time
 import json
 import numpy as np
 from PIL import Image
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, send_from_directory
 
 # Load disease data & agronomy tools
 from disease_data import get_disease_details
@@ -39,9 +39,18 @@ except Exception:
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
-app = Flask(__name__)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+app = Flask(
+    __name__,
+    static_folder=os.path.join(BASE_DIR, "static"),
+    static_url_path="/static",
+    template_folder=os.path.join(BASE_DIR, "templates")
+)
 load_dotenv(os.path.join(BASE_DIR, ".env"))
+
+@app.route("/static/<path:filename>")
+def serve_static(filename):
+    return send_from_directory(os.path.join(BASE_DIR, "static"), filename)
 
 # PlantVillage 38 Classes Mapping
 PLANT_DISEASES_CLASSES = [
