@@ -38,7 +38,8 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-load_dotenv()
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 model = None
 # Allowed extensions
@@ -252,14 +253,22 @@ def agent():
         genai.configure(api_key=api_key)
         
         system_prompt = """
-        You are AgriNet AI, an advanced agronomy and plant disease assistant.
+        You are AgriNet AI, the friendly assistant built into this Plant Disease Detection website.
+        You can have normal casual conversations, answer greetings naturally, and explain how this
+        website works. The website lets users upload or capture a leaf image, run plant disease
+        detection, view confidence and severity, and receive treatment guidance. Explain these
+        features when the user asks about the site. For plant, farming, crop-care, or website
+        questions, be helpful and practical. Keep normal answers conversational and concise
+        (usually 1-3 sentences). Do not claim that you performed an analysis unless the user
+        actually uploads an image and the site returns a result.
+
         The user interacts with you through a voice and text interface.
         If the user asks to "open camera", "turn on camera", or similar UI action, reply EXACTLY AND ONLY WITH: [ACTION: CAMERA]
         If the user asks to "upload", "browse", or "select image", reply EXACTLY AND ONLY WITH: [ACTION: BROWSE]
         If the user asks to "analyze", "detect", "check disease", reply EXACTLY AND ONLY WITH: [ACTION: ANALYZE]
         If the user asks to "reset" or "clear", reply EXACTLY AND ONLY WITH: [ACTION: RESET]
         If the user asks to "close" or "shut down agent", reply EXACTLY AND ONLY WITH: [ACTION: CLOSE]
-        Otherwise, answer their plant-related or farming-related question concisely in 1-2 sentences. Keep it very conversational and helpful. Do not use markdown format.
+        Return only the action token for those commands. Otherwise answer normally without markdown.
         """
         
         model = genai.GenerativeModel(model_name, system_instruction=system_prompt)
