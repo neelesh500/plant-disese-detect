@@ -503,11 +503,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Confidence text & bar
-        const confVal = parseFloat(data.confidence) || 93.0;
+        const confidenceValue = parseFloat(data.confidence) || 93.0;
         const confText = document.getElementById('r-confidence-text');
         const confBar = document.getElementById('r-confidence-bar');
-        if (confText) confText.textContent = confVal.toFixed(2) + '%';
-        if (confBar) confBar.style.width = Math.min(100, Math.max(5, confVal)) + '%';
+        if (confText) confText.textContent = confidenceValue.toFixed(2) + '%';
+        if (confBar) confBar.style.width = Math.min(100, Math.max(5, confidenceValue)) + '%';
 
         // Severity, Latency & Recovery chips
         const heroSeverity = document.getElementById('r-hero-severity');
