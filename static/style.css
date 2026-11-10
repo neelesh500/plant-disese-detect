@@ -2118,6 +2118,92 @@ button:disabled { opacity: .65; cursor: wait; }
     .glass-panel { box-shadow: none !important; border: 1px solid #cccccc !important; }
 }
 
+.weather-panel {
+    background: linear-gradient(135deg, rgba(240, 249, 255, 0.96), rgba(236, 253, 245, 0.96));
+}
+
+.weather-controls {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin: 1.5rem 0 0.75rem;
+}
+
+.weather-controls input {
+    flex: 1 1 240px;
+    min-width: 180px;
+    border: 1px solid #cbdccc;
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    font: inherit;
+    color: var(--text-primary);
+    background: #ffffff;
+}
+
+.weather-status {
+    color: var(--text-secondary);
+    min-height: 1.5rem;
+    margin: 0.5rem 0 1rem;
+}
+
+.weather-current {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: #ffffff;
+    border: 1px solid #d5e5d0;
+    border-radius: 16px;
+}
+
+.weather-current .weather-icon { font-size: 3rem; }
+.weather-current h3 { margin-bottom: 0.25rem; }
+.weather-current strong { font-size: 2rem; color: var(--brand-secondary); }
+.weather-current small { color: var(--text-secondary); }
+
+.weather-forecast {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.weather-day {
+    padding: 1rem 0.75rem;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid #d5e5d0;
+    border-radius: 14px;
+}
+
+.weather-day strong, .weather-day span, .weather-day small {
+    display: block;
+}
+
+.weather-day span { font-size: 1.8rem; margin: 0.35rem 0; }
+.weather-day small { color: var(--text-secondary); line-height: 1.4; }
+
+.weather-advisory {
+    margin-top: 1rem;
+    padding: 1rem 1.15rem;
+    border-left: 4px solid var(--brand-primary);
+    border-radius: 8px;
+    background: #ecfdf5;
+    color: #14532d;
+}
+
+.weather-source {
+    display: block;
+    margin-top: 1rem;
+    color: var(--text-muted);
+}
+
+@media (max-width: 600px) {
+    .weather-current { grid-template-columns: auto 1fr; }
+    .weather-current strong { grid-column: 2; }
+}
+
 @media (max-width: 900px) {
     .tool-grid, .recipe-grid { grid-template-columns: 1fr; }
     .fert-bags-grid { grid-template-columns: 1fr; }

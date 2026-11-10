@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (targetTabId === 'pests') loadPestDirectory();
         if (targetTabId === 'organic') loadOrganicRecipes();
         if (targetTabId === 'history') renderHistoryList();
+        if (targetTabId === 'weather') initWeather();
 
         // Smooth scroll to content
         const featureNav = document.getElementById('feature-nav');
@@ -83,6 +84,126 @@ document.addEventListener('DOMContentLoaded', () => {
             const tabId = link.getAttribute('data-target');
             if (tabId) switchTab(tabId);
         });
+
+        // ==========================================
+        // 2. FARM WEATHER & SPRAY ADVISOR
+        // ==========================================
+        let weatherReady = false;
+        let weatherRequestId = 0;
+        const weatherStatus = document.getElementById('weather-status');
+        const weatherLocationInput = document.getElementById('weather-location');
+        const weatherCurrent = document.getElementById('weather-current');
+        const weatherForecast = document.getElementById('weather-forecast');
+        const weatherAdvisory = document.getElementById('weather-advisory');
+
+        function initWeather() {
+            if (weatherReady) return;
+            weatherReady = true;
+            const searchBtn = document.getElementById('weather-search-btn');
+            const locationBtn = document.getElementById('weather-location-btn');
+            if (searchBtn) searchBtn.addEventListener('click', () => {
+                const location = weatherLocationInput.value.trim();
+                if (!location) {
+                    setWeatherStatus('Please enter a city or village name.');
+                    return;
+                }
+                findWeatherLocation(location);
+            });
+            if (weatherLocationInput) weatherLocationInput.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') document.getElementById('weather-search-btn').click();
+            });
+            if (locationBtn) locationBtn.addEventListener('click', useCurrentLocation);
+        }
+
+        function setWeatherStatus(message) {
+            if (weatherStatus) weatherStatus.textContent = message;
+        }
+
+        async function findWeatherLocation(query) {
+            setWeatherStatus('Finding location...');
+            try {
+                const response = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=1&language=en&format=json`);
+                if (!response.ok) throw new Error('Location search failed');
+                const data = await response.json();
+                if (!data.results || !data.results.length) {
+                    setWeatherStatus('Location not found. Try a nearby town or district.');
+                    return;
+                }
+                const place = data.results[0];
+                weatherLocationInput.value = [place.name, place.admin1].filter(Boolean).join(', ');
+                loadWeather(place.latitude, place.longitude, place.name);
+            } catch (error) {
+                setWeatherStatus('Could not find this location. Check your internet connection and try again.');
+                console.error('Weather location error:', error);
+            }
+        }
+
+        function useCurrentLocation() {
+            if (!navigator.geolocation) {
+                setWeatherStatus('Location access is not supported by this browser.');
+                return;
+            }
+            setWeatherStatus('Requesting your location...');
+            navigator.geolocation.getCurrentPosition(
+                position => loadWeather(position.coords.latitude, position.coords.longitude, 'Your location'),
+                () => setWeatherStatus('Location permission was denied. Search for your village or city instead.'),
+                { enableHighAccuracy: false, timeout: 10000 }
+            );
+        }
+
+        async function loadWeather(latitude, longitude, placeName) {
+            const requestId = ++weatherRequestId;
+            setWeatherStatus('Loading live forecast...');
+            try {
+                const params = new URLSearchParams({
+                    latitude, longitude, timezone: 'auto',
+                    forecast_days: '7',
+                    current: 'temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m',
+                    daily: 'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,wind_speed_10m_max'
+                });
+                const response = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`);
+                if (!response.ok) throw new Error('Forecast request failed');
+                const data = await response.json();
+                if (requestId !== weatherRequestId) return;
+                renderWeather(data, placeName);
+                setWeatherStatus(`Updated ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`);
+            } catch (error) {
+                setWeatherStatus('Unable to load forecast right now. Please try again.');
+                console.error('Weather forecast error:', error);
+            }
+        }
+
+        function weatherIcon(code) {
+            if (code === 0) return '☀️';
+            if (code <= 3) return '⛅';
+            if (code <= 48) return '🌫️';
+            if (code <= 67 || code >= 80) return '🌧️';
+            if (code <= 77) return '❄️';
+            return '🌦️';
+        }
+
+        function renderWeather(data, placeName) {
+            const current = data.current;
+            const daily = data.daily;
+            weatherCurrent.classList.remove('hidden');
+            weatherAdvisory.classList.remove('hidden');
+            weatherCurrent.innerHTML = `
+                <span class="weather-icon">${weatherIcon(current.weather_code)}</span>
+                <div><h3>${placeName}</h3><small>Humidity ${current.relative_humidity_2m}% · Wind ${Math.round(current.wind_speed_10m)} km/h</small></div>
+                <strong>${Math.round(current.temperature_2m)}°C</strong>
+            `;
+            weatherForecast.innerHTML = daily.time.map((date, index) => {
+                const day = index === 0 ? 'Today' : new Date(`${date}T12:00:00`).toLocaleDateString([], { weekday: 'short' });
+                return `<div class="weather-day"><strong>${day}</strong><span>${weatherIcon(daily.weather_code[index])}</span><b>${Math.round(daily.temperature_2m_max[index])}° / ${Math.round(daily.temperature_2m_min[index])}°</b><small>Rain ${daily.precipitation_probability_max[index]}%<br>${daily.precipitation_sum[index].toFixed(1)} mm</small></div>`;
+            }).join('');
+            const rain = daily.precipitation_probability_max[0];
+            const wind = daily.wind_speed_10m_max[0];
+            const advice = rain >= 60 ? '🌧️ Rain likely: postpone spraying and irrigation today; check drainage.' :
+                wind >= 25 ? '💨 Wind is strong: avoid pesticide spraying to reduce drift.' :
+                    rain <= 20 && current.relative_humidity_2m < 50 ? '💧 Dry conditions: plan early-morning irrigation and monitor soil moisture.' :
+                        '✅ Suitable field conditions: spray only during calm, cool hours and follow the product label.';
+            weatherAdvisory.innerHTML = `<strong>Today’s field advisory:</strong> ${advice}`;
+        }
     });
 
     // ==========================================
@@ -1080,6 +1201,8 @@ document.addEventListener('DOMContentLoaded', () => {
             switchTab('calendar');
         } else if (action === "TAB_SOIL") {
             switchTab('soil');
+        } else if (action === "TAB_WEATHER") {
+            switchTab('weather');
         } else if (action === "CLOSE") {
             setTimeout(closeAgent, 1200);
         }

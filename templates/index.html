@@ -40,6 +40,7 @@
             <a href="#feature-nav" class="nav-link" data-target="calendar">🌦️ Crop Calendar</a>
             <a href="#feature-nav" class="nav-link" data-target="soil">🩺 Soil Health</a>
             <a href="#feature-nav" class="nav-link" data-target="history">📜 History</a>
+            <a href="#feature-nav" class="nav-link" data-target="weather">🌤️ Weather</a>
         </nav>
         <div class="header-actions">
             <button class="btn-agent-top" id="top-agent-btn">
@@ -66,7 +67,7 @@
                     <span class="stat-label">Dosage & Medicine Data</span>
                 </div>
                 <div class="hero-stat-item">
-                    <span class="stat-number">9-in-1</span>
+                    <span class="stat-number">10-in-1</span>
                     <span class="stat-label">Integrated Tools</span>
                 </div>
             </div>
@@ -140,6 +141,13 @@
                     <div class="f-text">
                         <strong>Scan History</strong>
                         <small>Past Prescriptions & Records</small>
+                    </div>
+                </button>
+                <button class="feature-btn" data-tab="weather">
+                    <span class="f-icon">🌤️</span>
+                    <div class="f-text">
+                        <strong>Farm Weather</strong>
+                        <small>Forecast & spray advisories</small>
                     </div>
                 </button>
             </div>
@@ -930,7 +938,30 @@
         </div>
 
         <!-- ========================================== -->
-        <!-- TAB 8: SCAN HISTORY & RECORDS              -->
+        <!-- TAB 8: FARM WEATHER & SPRAY ADVISOR       -->
+        <!-- ========================================== -->
+        <div class="tab-pane hidden" id="pane-weather">
+            <div class="tool-panel glass-panel weather-panel">
+                <div class="tool-header">
+                    <span class="section-kicker">Location-aware forecast</span>
+                    <h2>🌤️ Farm Weather & Spray Advisor</h2>
+                    <p>Use your location or search a nearby town to plan irrigation, spraying, and field work.</p>
+                </div>
+                <div class="weather-controls">
+                    <input type="text" id="weather-location" placeholder="Enter city or village (e.g. Pune)">
+                    <button class="btn-primary" id="weather-search-btn">🔎 Check Weather</button>
+                    <button class="btn-outline" id="weather-location-btn">📍 Use My Location</button>
+                </div>
+                <div id="weather-status" class="weather-status" role="status">Search a location to load the latest forecast.</div>
+                <div id="weather-current" class="weather-current hidden"></div>
+                <div id="weather-forecast" class="weather-forecast"></div>
+                <div id="weather-advisory" class="weather-advisory hidden"></div>
+                <small class="weather-source">Forecast data: Open-Meteo · No API key required</small>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 9: SCAN HISTORY & RECORDS              -->
         <!-- ========================================== -->
         <div class="tab-pane hidden" id="pane-history">
             <div class="tool-panel glass-panel">
